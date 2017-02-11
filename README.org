@@ -1,0 +1,13 @@
+#+TITLE: Yajun's Blog Source Code
+
+* 创建命令
+  #+BEGIN_SRC sh
+    gem install jekyll
+    jekyll new blog
+    cd blog
+    bundle install
+  #+END_SRC
+
+* 运行命令
+  : jekyll serve
+  : bundle exec jekyll serve 
