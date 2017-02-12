@@ -1,6 +1,21 @@
 ---
-# You don't need to edit this file, it's empty on purpose.
-# Edit theme's home layout instead if you wanna make some changes
-# See: https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-layout: home
+layout: default
 ---
+
+<div>
+   
+  <ul class="list-unstyled">
+    {% for post in site.posts %}
+    {% if forloop.index <= 10 %}
+              <a href="{{ post.url }}">
+                <h3 class="blog-post-title">{{ post.title }}</h3>
+                <p class="blog-post-meta">{{ post.date | date: "%B %e, %Y" }} By <a href="#">{{ post.author}}</a> </p>
+                <p ><b>内容摘要: </b>{{ post.excerpt | remove: '<p>' | remove: '</p>' | strip_html | truncate: 150 }}</p>
+              </a>
+    {% endif %}
+    {% endfor %}
+  </ul>
+</div>
+
+
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <body>
+    {% include header.html %}
+
+    
+<div class="container">
+    <div class="row">
+
+      <div class="col-sm-8 blog-main">
+
+        {{content}}
+
+        
+        <nav>
+          <ul class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+          </ul>
+        </nav>
+
+      </div><!-- /.blog-main -->
+
+      <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+        <div class="sidebar-module sidebar-module-inset">
+          <h4>博主信息</h4>
+          <img src="/images/avatar.png" alt="avatar.png" class="img-responsive img-rounded">
+          <hr>
+              <span class="glyphicon glyphicon-user"> 山庄来客(Jackson)</span>
+              <address>
+                <span class="glyphicon glyphicon-envelope" title ="Email"> {{site.email}}</span>
+              </address>
+            </div>
+            
+        <div class="sidebar-module">
+          <h4>文章存档</h4>
+          <ol class="list-unstyled">
+            {% assign lastyear = "2014" %}
+            {% assign counter = 0 %}
+            {% for post in site.posts %}
+            {% assign currentyear = post.date | date: "%Y" %}
+            {% if currentyear != lastyear %}
+            {% if counter != 0 %}
+            <li>{{lastyear}}(<a href="/chrono/{{lastyear}}/">{{counter}}</a>)</li>
+            {% endif %}
+            {% assign counter = 0 %}
+            {% assign lastyear = currentyear %}
+            {% endif %}
+            {% assign counter = counter | plus:1 %}
+            {% endfor %}
+            <li>{{lastyear}}(<a href="/chrono/{{lastyear}}/">{{counter}}</a>)</li>
+          </ol>
+        </div>
+        <div class="sidebar-module">
+          <h4>文章分类</h4>
+          <ol class="list-unstyled">
+            {% for category in site.categories %}
+            {% assign currentCategory = category | first %}
+            {% assign counter = 0 %}
+            
+            <li>{{ currentCategory }}<a href="/archives/{{ currentCategory }}/">
+                (
+                {% for post in site.categories[currentCategory] %}
+                {% assign counter = counter | plus:1 %}
+                {% endfor %}                
+                {{counter}}
+                )
+            </a></li>
+
+            {% endfor %}
+          </ol>
+        </div>
+        
+        <div class="sidebar-module">
+          <h4>我的相关网站</h4>
+          <ol class="list-unstyled">
+            <li><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="https://github.com/fuyajun1983cn"> GitHub</a></li>
+            <li><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="#"> Facebook</a></li>
+            <li><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="http://blog.csdn.net/fuyajun01"> CSDN Blog</a></li>
+          </ol>
+        </div>
+      </div><!-- /.blog-sidebar -->
+
+    </div><!-- /.row -->
+
+</div><!-- /.container -->
+
+
+{% include footer.html %}
+</body>
+
+</html>
