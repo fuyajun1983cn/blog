@@ -22,18 +22,37 @@
           </ul>
         </nav>
 
+
+        <div class="panel panel-primary">
+  	      <!-- 多说评论框 start -->
+	      <div class="ds-thread " data-thread-key="{{page.id}}" data-title="{{ page.title }}" data-url="{{page.url}}"></div>
+          <!-- 多说评论框 end -->
+          <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+          <script type="text/javascript">
+            var duoshuoQuery = {short_name:"fuyajun1983cn"};
+	        (function() {
+		    var ds = document.createElement('script');
+		    ds.type = 'text/javascript';ds.async = true;
+		    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		    ds.charset = 'UTF-8';
+		    (document.getElementsByTagName('head')[0] 
+		    || document.getElementsByTagName('body')[0]).appendChild(ds);
+	        })();
+          </script>
+          <!-- 多说公共JS代码 end -->
+        </div>
+
       </div><!-- /.blog-main -->
 
       <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
         <div class="sidebar-module sidebar-module-inset">
           <h4>博主信息</h4>
-          <img src="/images/avatar.png" alt="avatar.png" class="img-responsive img-rounded">
-          <hr>
-              <span class="glyphicon glyphicon-user"> 山庄来客(Jackson)</span>
-              <address>
-                <span class="glyphicon glyphicon-envelope" title ="Email"> {{site.email}}</span>
-              </address>
-            </div>
+          <img src="/images/wemedia.jpg" alt="logo.png" class="img-responsive img-rounded">
+          <span class="glyphicon glyphicon-user"> 山庄来客(Jackson)</span>
+          <address>
+            <span class="glyphicon glyphicon-envelope" title ="Email"> {{site.email}}</span>
+          </address>
+        </div>
             
         <div class="sidebar-module">
           <h4>文章存档</h4>
@@ -44,14 +63,14 @@
             {% assign currentyear = post.date | date: "%Y" %}
             {% if currentyear != lastyear %}
             {% if counter != 0 %}
-            <li>{{lastyear}}(<a href="/chrono/{{lastyear}}/">{{counter}}</a>)</li>
+            <li><a href="/chrono/{{lastyear}}/">{{lastyear}}</a>({{counter}})</li>
             {% endif %}
             {% assign counter = 0 %}
             {% assign lastyear = currentyear %}
             {% endif %}
             {% assign counter = counter | plus:1 %}
             {% endfor %}
-            <li>{{lastyear}}(<a href="/chrono/{{lastyear}}/">{{counter}}</a>)</li>
+            <li><a href="/chrono/{{lastyear}}/">{{lastyear}}</a>({{counter}})</li>
           </ol>
         </div>
         <div class="sidebar-module">
@@ -61,14 +80,14 @@
             {% assign currentCategory = category | first %}
             {% assign counter = 0 %}
             
-            <li>{{ currentCategory }}<a href="/archives/{{ currentCategory }}/">
+            <li><a href="/archives/{{ currentCategory }}/">{{ currentCategory }}</a>
                 (
                 {% for post in site.categories[currentCategory] %}
                 {% assign counter = counter | plus:1 %}
                 {% endfor %}                
                 {{counter}}
                 )
-            </a></li>
+            </li>
 
             {% endfor %}
           </ol>
