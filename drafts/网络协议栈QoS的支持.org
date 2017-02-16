@@ -1,0 +1,10 @@
+#+TITLE: QoS在Linux协议栈上的实现分析
+#+AUTHOR: 山庄来客
+#+EMAIL: fuyajun1983cn AT 163.com
+
+QDisc
+
+#+BEGIN_SRC c
+  netdev = alloc_etherdev_mq(..., 2);
+  netdev->features |= NETIF_IF_MULTI_QUEUE;
+#+END_SRC

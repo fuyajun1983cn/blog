@@ -1,0 +1,148 @@
+#+TITLE:Linux SDIO驱动架构分析
+#+AUTHOR: 山庄来客
+#+EMAIL: fuyajun1983cn AT 163.com
+
+* SDIO规范概述
+  
+* SDIO Host
+  对于Host端来说，除了自身的一些信息的初始化与维护外，一个主要的功能就
+  是随时检查SDIO卡的插拔事件，并及时作出响应。下面我们在分析一下识卡的
+  过程。
+  1. Host驱动初始化
+     Host驱动和设备挂载在Linux内置的虚拟平台总线 =platform_bus_type=
+     中， 两者通过名称匹配，在内核启动期间，相应的平台设备会被创建并注
+     册到Linux内核中。（通过Device Tree描述文件指定设备相关信息）
+  2. mmc框架
+     mmc框架初始时，会创建两条自己的虚拟总线：
+     #+BEGIN_SRC c
+       static int __init mmc_init(void)
+       {
+         ...
+         ret = mmc_register_bus(); //mmc_bus_type
+         ...
+         ret = sdio_register_bus(); //sdio_bus_type
+       }
+     #+END_SRC
+     一条虚拟总线用于挂载MMC卡设备，另一条总线用于挂载SDIO设备，根据ID
+     号进行匹配。
+
+     在Host驱动程序中，会注册检测卡状态变化的中断处理函数，该中断处理
+     函数会Trigger识卡流程。
+
+     mmc框架中已经提供了一个接口： =mmc_alloc_host= ，这个接口供
+     Host Controller的驱动调用。
+     在该函数中，它初始化了一个 =struct delayed_work= ， 这个就是在检
+     测到SD卡的状态变化时，Host端驱动处理中断时，要进行调度的一
+     个工作项，会被推送到 mmc框架中定义的workqueue中去调度执行。 对应
+     的处理函数是： =mmc_rescan= 。研究标准的SDIO识卡流程可以从该函数
+     中开始。
+  3. Host端发起的识卡流程分析
+     
+* SDIO Device
+  sdio设备驱动程序的主要结构如下所示：
+  1. 初始化
+     #+CAPTION:vid&pid定义
+     #+BEGIN_SRC c
+       static const struct sdio_device_id xxx_ids[] = {
+         {SDIO_DEVICE(0xvendor, 0xproduct)},
+         {SDIO_DEVICE_CLASS(xxx_class)}
+         {/*end: all zero */}
+       };
+
+       MODULE_DEVICE_TABLE(sdio, xxx_ids);
+     #+END_SRC
+
+     #+CAPTION: 回调函数注册
+     #+BEGIN_SRC c
+       static struct sdio_driver xxx_driver = {
+         .probe = xxx_probe,
+         .remove = xxx_remove,
+         .name = "xxx",
+         .id_table = xxx_ids,
+       };
+     #+END_SRC
+     
+     #+CAPTION: 驱动入口函数定义
+     #+BEGIN_SRC c
+       static int __init xxx_init(void)
+       {
+         ...
+         ret = sdio_register_driver(&xxx_driver);
+         ...
+       }
+     #+END_SRC
+
+     #+CAPTION: 驱动出口函数定义
+     #+BEGIN_SRC c
+       static void __exit xxx_exit(void)
+       {
+         ...
+         sdio_unregister_driver(&xxx_driver);
+         ...
+       }
+     #+END_SRC
+
+  2. Probe & Removal
+     #+CAPTION: 数据结构定义
+     #+BEGIN_SRC c
+       struct xxx_port {
+         ...
+         struct sdio_func *func;
+         ...
+       }; 
+     #+END_SRC
+
+     #+CAPTION: Probe函数定义
+     #+BEGIN_SRC c
+       static int xxx_probe(struct sdio_func *func, const struct sdio_device_id *id)
+       {
+         struct xxx_port *port;
+         port = kzalloc(sizeof(struct xxx_port), GFP_KERNEL);
+
+         port->func = func;
+         sdio_set_drvdata(func, port);
+       }
+     #+END_SRC
+
+     #+CAPTION: Remove函数定义
+     #+BEGIN_SRC c
+       static void xxx_remove(struct sdio_func *func)
+       {
+         struct xxx_port *port = sdio_get_drvdata(func);
+         port->func = NULL;
+       }
+     #+END_SRC
+
+  3. 启动操作
+     #+BEGIN_SRC c
+       sdio_claim_host(port->func); //取得MMC Host  Controller 的使用权
+       ret = sdio_enable_func(port->func); //enalbe sdio function 
+       ret = sdio_claim_irq(port->func, xxx_irq); //注册中断处理函数
+       sdio_release_host(port->func); //释放MMC Host Controller的使用权
+     #+END_SRC
+
+  4. 停止操作
+     #+BEGIN_SRC c
+       sdio_claim_host(port->func);
+       sdio_release_irq(port->func); //注销中断处理函数
+       sdio_disable_func(port->func);
+       sdio_release_host(port->func);
+     #+END_SRC
+
+  5. 实际过程中的一些I/O操作接口
+     这些接口定义在文件： sdio_func.h 
+     需要包含的头文件主要有：
+     #+BEGIN_SRC c
+       #include <linux/mmc/sdio_func.h>
+       #include <linux/mmc/card.h>
+       #include <linux/mmc/core.h>
+       #include <linux/mmc/host.h>
+     #+END_SRC
+
+     主要函数接口有(基于 =mmc_io_rw_direct()= )：
+     1. sdio_readb
+     2. sdio_writeb
+     3. sdio_readw
+     4. sdio_writew
+     5. sdio_readl
+     6. sdio_writel
