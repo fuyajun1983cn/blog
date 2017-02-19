@@ -1,0 +1,87 @@
+#+TITLE: 通过WEP方式连接AP的流程分析
+
+
+* 理论说明
+  在802.11i之前，无线网络认证主要有两种方式：
+  1. Open System Authentication
+  2. Shared Key Authentication 
+
+  在Open system Authentication中,client与AP之间的认证交互主要有如下4步， 
+  [[../../../images/2017/2017021901.png]]
+
+  如图所示，这种认证方式仅仅只相当于“插上网线“的动作。在WPA/WPA2的认证
+  加密过程中，会强制使用Open System Authentication作为网络认证的方式。
+
+  对于WEP SHARED Key的的方式，它会遵循如下的流程进行认证：
+  [[../../../images/2017/2017021701.png]]
+
+  这个过程中，总共发生了4次帧的交换，并只对Client进行了身份合法性验证。
+
+* 连接AP的相关命令
+  通过WEP方式连接AP的步骤如下：
+  #+BEGIN_SRC sh
+    add_network
+    set_network <network_id> ssid "<Ap ssid>"
+    set_network <network_id> key_mgmt NONE
+    set_network <network_id> wep_key0 "<wep_key0>"
+    //add wep_key 1...3 if you set them on AP.
+    set_network <network_id> auth_alg <OPEN | SHARED>
+    set_network <network_id> wep_tx_keyidx <keyidx>
+    set_network <network_id> scan_ssid 1 //for connecting hidden ssid
+    select_network <network_idx>
+  #+END_SRC
+
+* =wpa_supplicant= 代码流程分析
+  作为Client端，当使用WEP Shared Key方式进行认证加密时，4个帧的发送与
+  接收过程主要是在驱动中进行处理，  =wpa_supplicant= 中是在关联成功后，
+  才会进行后续的处理，主要有两种情况下的处理流程：
+  1. Client端使用了错误的WEP密钥。
+     这种情况下， =wpa_supplicant= 会收到连接失败的事件，并作出相应处
+     理（如选择下一个BSS进行连接等）。
+  2. Client端使用了正确的密钥通过了AP的验证。
+     这里会上报关联成功的消息，并通过ASSOCIATE事件通知上层，对应的事件
+     处理函数为： =wpa_supplicant_event_assoc= 。对于静态的WEP Key的方
+     式，会调用:
+     : wpa_set_wep_keys(wpa_s, wpa_s->current_ssid);
+     来保存WEP密钥到驱动中。
+
+     另外，这种情况下，也不会触RSN状态机进行4步握手的认证过程。 整个认
+     证关联过程算是结束了，后续就可以进行数据传输了。
+
+     
+  但是，如果 =WPA_DRIVER_FLAGS_SME= flag为1的情况下，相对来说，
+  =wpa_supplicant= 这一层可以对认证过程(Authentication)进行更多的控制，
+  基本上所需要的一些参数设置都是从 =wpa_supplicant= 这一层中传递下去的。
+
+  函数调用流程如下图所示：
+
+  #+BEGIN_SRC plantuml :exports results :file ../../../images/2017/2017021902.png :cmdline -charset UTF-8
+    @startuml
+    :wpa_supplicant_associate;
+    if (WPA_DRIVER_FLAGS_SME?) then (yes)
+    :sme_authenticate;
+    :sme_auth_start_cb;
+    note right
+    this is the callback function for
+    a radio-work scheduled from
+    sme_authenticate
+    end note
+    :sme_authenticate;
+    else(no)
+    : Authentication process is not
+    processed at wpa_supplicant layer;
+    endif
+    :wpas_start_assoc_cb;
+    @enduml
+
+  #+END_SRC
+
+  #+RESULTS:
+  [[file:../../../images/2017/2017021902.png]]
+
+  在这种情况下，authentication认证的第一步由 =wpa_supplicant= 触发，并
+  监听authentication过程的结果，函数 =sme_event_auth=
+  用于处理来自驱动的信息反馈。 如果失败，则会进行相应的处理。例如，当
+  使用 WEP Open的方式进行Authentication失败后，如果错误原因并不是认证
+  方式不支持，则可以继续尝试一下SHARED Key的方式再做一次Authentication
+  的过程。

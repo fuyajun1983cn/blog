@@ -1,0 +1,136 @@
+---
+layout: post
+date: 2017-02-19
+author: 山庄来客
+update: 2017-02-19
+categories: wpa_supplicant
+---
+<div id="content">
+<h1 class="title">通过WEP方式连接AP的流程分析</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 理论说明</a></li>
+<li><a href="#sec-2">2. 连接AP的相关命令</a></li>
+<li><a href="#sec-3">3. wpa_supplicant代码流程分析</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 理论说明</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在802.11i之前，无线网络认证主要有两种方式：
+</p>
+<ol class="org-ol">
+<li>Open System Authentication
+</li>
+<li>Shared Key Authentication 
+</li>
+</ol>
+
+<p>
+在Open system Authentication中,client与AP之间的认证交互主要有如下4步， 
+<img src="/images/2017/2017021901.png" alt="2017021901.png" class="img-responsive" />
+</p>
+
+<p>
+如图所示，这种认证方式仅仅只相当于“插上网线“的动作。在WPA/WPA2的认证
+加密过程中，会强制使用Open System Authentication作为网络认证的方式。
+</p>
+
+<p>
+对于WEP SHARED Key的的方式，它会遵循如下的流程进行认证：
+<img src="/images/2017/2017021701.png" alt="2017021701.png" />
+</p>
+
+<p>
+这个过程中，总共发生了4次帧的交换，并只对Client进行了身份合法性验证。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 连接AP的相关命令</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+通过WEP方式连接AP的步骤如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">add_network
+set_network &lt;network_id&gt; ssid "&lt;Ap ssid&gt;"
+set_network &lt;network_id&gt; key_mgmt NONE
+set_network &lt;network_id&gt; wep_key0 "&lt;wep_key0&gt;"
+//add wep_key 1...3 if you set them on AP.
+set_network &lt;network_id&gt; auth_alg &lt;OPEN | SHARED&gt;
+set_network &lt;network_id&gt; wep_tx_keyidx &lt;keyidx&gt;
+set_network &lt;network_id&gt; scan_ssid 1 //for connecting hidden ssid
+select_network &lt;network_idx&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> wpa_supplicant代码流程分析</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+作为Client端，当使用WEP Shared Key方式进行认证加密时，4个帧的发送与
+接收过程主要是在驱动中进行处理，  <code>wpa_supplicant</code> 中是在关联成功后，
+才会进行后续的处理，主要有两种情况下的处理流程：
+</p>
+<ol class="org-ol">
+<li>Client端使用了错误的WEP密钥。
+这种情况下， <code>wpa_supplicant</code> 会收到连接失败的事件，并作出相应处
+理（如选择下一个BSS进行连接等）。
+</li>
+<li>Client端使用了正确的密钥通过了AP的验证。
+这里会上报关联成功的消息，并通过ASSOCIATE事件通知上层，对应的事件
+处理函数为： <code>wpa_supplicant_event_assoc</code> 。对于静态的WEP Key的方
+式，会调用:
+<pre class="example">
+wpa_set_wep_keys(wpa_s, wpa_s-&gt;current_ssid);
+</pre>
+<p>
+来保存WEP密钥到驱动中。
+</p>
+
+<p>
+另外，这种情况下，也不会触RSN状态机进行4步握手的认证过程。 整个认
+证关联过程算是结束了，后续就可以进行数据传输了。
+</p>
+</li>
+</ol>
+
+
+<p>
+但是，如果 <code>WPA_DRIVER_FLAGS_SME</code> flag为1的情况下，相对来说，
+<code>wpa_supplicant</code> 这一层可以对认证过程(Authentication)进行更多的控制，
+基本上所需要的一些参数设置都是从 <code>wpa_supplicant</code> 这一层中传递下去的。
+</p>
+
+<p>
+函数调用流程如下图所示：
+</p>
+
+
+<div class="figure">
+<p><img src="/images/2017/2017021902.png" alt="2017021902.png" />
+</p>
+</div>
+
+<p>
+在这种情况下，authentication认证的第一步由 <code>wpa_supplicant</code> 触发，并
+监听authentication过程的结果，函数 <code>sme_event_auth</code>
+用于处理来看驱动的信息反馈。 如果失败，则会进行相应的处理。例如，当
+使用 WEP Open的方式进行Authentication失败后，如果错误原因并不是认证
+方式不支持，则可以继续尝试一下SHARED Key的方式再做一次Authentication
+的过程。
+</p>
+</div>
+</div>
+</div>
