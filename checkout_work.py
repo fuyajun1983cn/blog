@@ -3,6 +3,7 @@
 import os
 import inspect
 import time
+from optparse import OptionParser
 
 cur_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 
@@ -54,7 +55,13 @@ def git_pull():
     
 if __name__ == "__main__":
 
-    git_pull()
-    git_add()
-    git_commit()
-    git_push()
+    parser = OptionParser()
+    parser.add_option("-p", "--pull", action="store_true", dest="sync", help="Sync code from github", default=False)
+    parser.add_option("-s", "--submit", action="store_false", dest="sync", help="submit code from github", default=True)
+    (options, args) = parser.parse_args()
+    if options.sync == True:
+        git_pull()
+    else:
+        git_add()
+        git_commit()
+        git_push()
