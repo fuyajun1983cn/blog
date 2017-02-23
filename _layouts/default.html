@@ -63,14 +63,14 @@
             {% assign currentyear = post.date | date: "%Y" %}
             {% if currentyear != lastyear %}
             {% if counter != 0 %}
-            <li><a role="button" class="btn btn-default" href="/chrono/{{lastyear}}/">{{lastyear}}<span class="badge">{{counter}}</span></a></li>
+            <li><a  href="/chrono/{{lastyear}}/">{{lastyear}}<span class="badge">{{counter}}</span></a></li>
             {% endif %}
             {% assign counter = 0 %}
             {% assign lastyear = currentyear %}
             {% endif %}
             {% assign counter = counter | plus:1 %}
             {% endfor %}
-            <li><a role="button" class="btn btn-primary" href="/chrono/{{lastyear}}/">{{lastyear}}<span class="badge">{{counter}}</span></a></li>
+            <li><a  href="/chrono/{{lastyear}}/">{{lastyear}}<span class="badge">{{counter}}</span></a></li>
           </ol>
         </div>
         <div class="sidebar-module">
@@ -80,7 +80,7 @@
             {% assign currentCategory = category | first %}
             {% assign counter = 0 %}
             
-            <li><a role="button" class="btn btn-primary" href="/archives/{{ currentCategory }}/">{{ currentCategory }}
+            <li><a  href="/archives/{{ currentCategory }}/">{{ currentCategory }}
                 <span class="badge">
                 {% for post in site.categories[currentCategory] %}
                 {% assign counter = counter | plus:1 %}
