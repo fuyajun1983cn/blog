@@ -63,7 +63,7 @@
             {% assign currentyear = post.date | date: "%Y" %}
             {% if currentyear != lastyear %}
             {% if counter != 0 %}
-            <li><a  href="/chrono/{{lastyear}}/">{{lastyear}}<span class="badge">{{counter}}</span></a></li>
+            <li><a  href="/chrono/{{lastyear}}/">{{lastyear}} <span class="badge">{{counter}}</span></a></li>
             {% endif %}
             {% assign counter = 0 %}
             {% assign lastyear = currentyear %}
