@@ -1,0 +1,72 @@
+#+TITLE: wext命令的处理流程分析
+
+
+* 概述
+  LInux内核无线架构中，支持两种标准：wext和nl80211/cfg80211。随着内核
+  的演进以及wext本身的退出，越来越多无线驱动采用了nl80211/cfg80211的架
+  构云实现无线网络驱动。然而，出于客户的需求以及兼容性方面的原因，
+  基于wext的实现仍然存在于许多无线驱动代码中，至少会同时提供wext以及
+  nl80211/cfg80211两种实现方法，主要原因有如下几点：
+
+  1.大量旧的无线网络相关的重要工具仍然使用wext的方式与无线驱动进行交互，
+    如 =iwpriv= 命令。
+  2.有些平台不想使用 =wpa_supplicant= ，而是想通过 ioctl方式直接与无线
+    驱动进行交互，那么使用wext是一种很好的选择。
+
+  虽然说wext的功能已经停止了更新，但是cfg80211已经通过兼容层使得针对
+  wext的一些处理都会转换成对cfg80211一些接口的调用。两者之间可以共享一
+  部分代码处理。
+
+  接下来，我们来跟踪一下wext处理来看应用层的命令的流程以及如果往应用层
+  回报事件消息的流程。
+
+* 流程分析
+
+** 处理来自上层的ioctl命令
+   由于wext本质上是通过ioctl来回调驱动注册的一些函数的，所以在驱动注
+   册时，需要提供 ioctl 函数来处理各种网络相关的命令。
+
+   ioctl是在注册网络设备的时候，通过如下结构体注册的：
+   #+BEGIN_SRC c
+     struct net_device_ops xxx_ops =  {
+       ...
+       .ndo_do_ioctl = xxx_ioctl;
+       ...
+     };
+   #+END_SRC
+   这样就可以直接调用驱动的 ioctl 函数了。不过，这种方式属于以前旧的驱
+   动架构，实际上，新的驱动可以通过如下结构体来注册处理 ioctl 命令：
+   #+BEGIN_SRC c
+
+     const struct iw_handler_def cfg80211_wext_handler = {
+         .num_standard       = ARRAY_SIZE(cfg80211_handlers),
+         .standard       = cfg80211_handlers,
+         .get_wireless_stats = cfg80211_wireless_stats,
+     };   
+   #+END_SRC
+
+   上述是在内核中注册的一些标准处理命令，驱动一般会另外注册一些私有的命令。
+
+   这个结构实例可以根据情况挂在不同的结构指针下：
+   1. =struct wireless_dev=
+      : .phy.wext
+   2. =struct net_device=
+      : .wireless_handlers
+
+
+   wext的ioctl命令处理的入口函数是：
+   : wireless_process_ioctl
+
+** 驱动向上层回报一些事件
+   在驱动中，当使用 wext 框架时，一般使用 =wireless_send_event= 来向上
+   报告网络事件。
+
+   该函数通过 RtNetlink事件通道，将事件通过内核其他模块将事件向上层回
+   报。
+
+   这个过程是通过 =wireless_nlevent_work= 对应的处理函数完成的。该
+   =delayed_work= 对应的处理函数是： =wireless_nlevent_process= 。
+
+
+   cfg80211_process_wdev_events
+      
