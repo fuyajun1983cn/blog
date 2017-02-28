@@ -34,7 +34,21 @@
        ...
      };
    #+END_SRC
-   这样就可以直接调用驱动的 ioctl 函数了。不过，这种方式属于以前旧的驱
+   这样就可以直接调用驱动的 ioctl 函数了。
+   ioctl相关的命令可以分为三大类：
+   1. SIOCIWFIRST ~ SIOCIWLAST(SIOCIWFIRSTPRIV)
+      - 范围： 0x8B00 ~ 0x8BDF
+      - 这类属于Linux内核支持的标准命令
+      - 命令规则 ：SIOC G/S cmdName (G:get, S:set)
+   2. SIOCIWFIRSTPRIV ~ SIOCIWLASTPRIV
+      - 范围： 0x8BE0 ~ 0x8BFF
+      - 自定义的private命令
+      - 所有偶数的命令需要root权限，且不返回数据给user space.
+   3. SIOCIWLASTPRIV + 1
+      - 范围： 0x89F0 ~ 0x89FF
+      - 驱动自定义的私有命令
+
+   不过，这种方式属于以前旧的驱
    动架构，实际上，新的驱动可以通过如下结构体来注册处理 ioctl 命令：
    #+BEGIN_SRC c
 
@@ -70,3 +84,4 @@
 
    cfg80211_process_wdev_events
       
+   
