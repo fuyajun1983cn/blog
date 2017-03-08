@@ -1,10 +1,11 @@
 #+TITLE: 博客文章编写计划
 
-* 2017年文章编写的文章[1/5]
+* 2017年文章编写的文章[1/6]
 
 ** ☛ TODO Linux SDIO驱动研究
-** ☛ TODO vlan在Linux网络协议栈中的实现
 ** ☛ TODO wext命令的处理流程分析
 ** ☛ TODO Linux网络协议栈中QoS机制研究
+** ☛ TODO Linux VLAN处理流程分析 
+** ☛ TODO TCP Sequence Number & Acknowledge Number
 ** ✔ DONE wpa_supplicant中WEP Shared Key连接网络流程研究
    CLOSED: [2017-02-26 日 14:25]
