@@ -140,9 +140,9 @@
      #+END_SRC
 
      主要函数接口有(基于 =mmc_io_rw_direct()= )：
-     1. sdio_readb
-     2. sdio_writeb
-     3. sdio_readw
-     4. sdio_writew
-     5. sdio_readl
-     6. sdio_writel
+     1. =sdio_readb=
+     2. =sdio_writeb=
+     3. =sdio_readw=
+     4. =sdio_writew=
+     5. =sdio_readl=
+     6. =sdio_writel=
