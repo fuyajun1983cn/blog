@@ -1,15 +1,17 @@
 ---
 layout: page
-title: About
+title: 关于
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
+本站的宗旨是:知识分享.您可以通过本站访问我编写或翻译的文档，原创博客文章等内容，您可以随时通过如下邮件地址向我反馈任何问题: fuyajun1983cn@163.com
 
-You can find the source code for the Jekyll new theme at:
-{% include icon-github.html username="jekyll" %} /
-[minima](https://github.com/jekyll/minima)
 
-You can find the source code for Jekyll at
-{% include icon-github.html username="jekyll" %} /
-[jekyll](https://github.com/jekyll/jekyll)
+```
+不积跬步,无以至千里; 不积小流,无以成江海 
+                     —— 荀子《劝学篇》
+```
+
+<p>
+随机可以进入我的主页： <a href="http://ifjy.me">Yajun's Home Page</a> 访问其他内容。
+</p>

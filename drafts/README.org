@@ -1,6 +1,6 @@
 #+TITLE: 博客文章编写计划
 
-* 2017年文章编写的文章[1/5]
+* 2017年文章编写的文章[3/7]
 
 ** ☛ TODO Linux SDIO驱动研究
 ** ☛ TODO vlan在Linux网络协议栈中的实现
@@ -8,3 +8,7 @@
 ** ☛ TODO Linux网络协议栈中QoS机制研究
 ** ✔ DONE wpa_supplicant中WEP Shared Key连接网络流程研究
    CLOSED: [2017-02-26 日 14:25]
+** ✔ DONE Binder通信过程中的结点管理
+   CLOSED: [2017-03-11 六 18:55]
+** ✔ DONE Binder结点管理
+   CLOSED: [2017-03-11 六 18:55]

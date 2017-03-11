@@ -1,0 +1,382 @@
+---
+layout: post
+date: 2017-03-11
+author: 山庄来客
+update: 2017-03-11
+categories: android 软件开发
+---
+<div id="content">
+<h1 class="title">Binder结点管理</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. Binder结点管理</a>
+<ul>
+<li><a href="#sec-1-1">1.1. 新结点的创建</a></li>
+<li><a href="#sec-1-2">1.2. 结点引用计数管理</a></li>
+<li><a href="#sec-1-3">1.3. 结点引用</a></li>
+<li><a href="#sec-1-4">1.4. 结点引用计数管理</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Binder结点管理</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在Binder驱动中，Binder结点随着进程IPC通信开始而生，随着进程IPC通信
+结束而亡，换句话说，Binder结点是维系IPC通信的基础，而且一个Binder
+结点也只能在完全无IPC通信的情况下被删除。本文将重点研究Binder结点
+从生到死的过程。
+</p>
+
+<p>
+Binder结点作为IPC通信过程中的实体，是IPC通信的媒介。在描述一个
+Binder进程信息的数据结构中，与结点相关的成员变量有：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">struct binder_proc {
+        struct hlist_node proc_node;// list node for global binder_procs hlist
+        ...
+        struct rb_root nodes;
+        struct rb_root refs_by_desc;
+        struct rb_root refs_by_node;
+        ...
+};
+</pre>
+</div>
+
+<p>
+其中，nodes记录了当前进程创建的Binder结点。而 <code>refs_by_desc</code> 和
+<code>refs_by_node</code> 都记录的是Binder结点引用，换句话说，它代表一个对其他进程
+中创建的Binder结点的引用。Nodes链表的大小反映了有多少进程在向当前
+进程请求服务，而结点引用则反映了当前进程在向哪些进程请求服务。
+</p>
+
+<p>
+创建Binder结点的函数是 <code>binder_new_node</code> 。在分析此函数之前，我们先分析
+一下Binder驱动中结点的数据结构定义：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">struct binder_node {
+        int debug_id; 
+        struct binder_work work;
+        union {
+                struct rb_node rb_node;
+                struct hlist_node dead_node;
+        };
+        struct binder_proc *proc;
+        struct hlist_head refs;
+        int internal_strong_refs;
+        int local_weak_refs;
+        int local_strong_refs;
+        void __user *ptr;
+        void __user *cookie;
+        unsigned has_strong_ref:1;
+        unsigned pending_strong_ref:1;
+        unsigned has_weak_ref:1;
+        unsigned pending_weak_ref:1;
+        unsigned has_async_transaction:1;
+        unsigned accept_fds:1;
+        unsigned min_priority:8;
+        struct list_head async_todo;
+};
+</pre>
+</div>
+
+<p>
+下面分别解释上述各个成员变量的意义：
+</p>
+<ol class="org-ol">
+<li><code>debug_id</code> ： 结点的一个数字序号标记，根据全局变量
+<code>binder_last_id</code> 来维护并分配， <code>binder_last_id</code> 是Binder驱动
+全局变量，且单调递增的。
+</li>
+<li>work：类型为 <code>BINDER_WORK_NODE</code> 的 <code>binder_work</code> 结点，添加
+到线程上的todo链表中去处理，主要处理结点的引用计数。
+</li>
+<li>联合体： <code>rb_node</code> 代表此结点在进程全局红黑树 <code>binder_procs</code> 上
+的一个结点。而 <code>dead_node</code> 代表红黑树 <code>binder_dead_nodes</code> 中的
+一个结点。根据当前结点的状态，将决定将结点加入到哪个全局链表中。
+</li>
+<li>proc: 与结点相关联的 <code>binder_proc</code> 。
+</li>
+<li>refs:  <code>binder_ref</code> 链表，记录当前其他进程对该Binder结点的引用。
+</li>
+<li><code>internal_strong_refs</code> ：内部强引用计数
+</li>
+<li><code>local_weak_refs</code> ：本地弱引用计数。
+</li>
+<li><code>local_strong_refs</code> ：本地强引用计数。
+</li>
+<li><code>ptr</code> ：通常指本地Binder对象的内存地址，当其是0号结点时，该指针为空。
+</li>
+<li>cookies: 通常指本地Binder对象的私有数据。
+</li>
+<li><code>has_strong_ref</code> ：是否拥有强引用。
+</li>
+<li><code>pending_strong_ref</code> ：对结点的强引用是否处理完成
+（ <code>BC_ACQUIRE_DONE</code> ）
+</li>
+<li><code>has_weak_ref</code> ：是否拥有弱引用。
+</li>
+<li><code>pending_weak_ref</code> ：对结点的弱引用是否处理完成
+（ <code>BC_INCREFS_DONE</code> ）
+</li>
+<li><code>has_async_transaction</code> ：拥有异步事务？
+</li>
+<li><code>accept_fds</code> ：是否允许传递文件描述符？
+</li>
+<li><code>min_priority</code> ：最低优先级
+</li>
+<li><code>async_todo</code> ：该结点上的异步工作队列。
+</li>
+</ol>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> 新结点的创建</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+在函数 <code>binder_new_node()</code> ，创建的新结点将会加入到当前进程的结点树中，
+这些结点通过红黑树的结构来维护，以本地Binder对象的内存地址的大小作
+为排序依据。此函数主要是在 <code>BR_TRANSACTION</code> 中，为发送方创建相应的本地
+结点，以便接收方能够通过该结点获取关于发送方的一些信息。当然，在调
+用 <code>BINDER_SET_CONTEXT_MGR</code> 命令时，也会调用该函数创建一个特殊的结
+点。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 结点引用计数管理</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+结点引用计数的管理主要通过如下两个函数：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c">static int binder_inc_node(struct binder_node *node, int strong, int internal,
+                           struct list_head *target_list)
+static int binder_dec_node(struct binder_node *node, int strong, int internal)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> 结点引用</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+结点引用与结点密不可分。事实上，可以认为结点引用是结点在另一个进程
+中的代理。它们之间的关系是多对一的关系，即一个结点可以对应多个结点
+引用，但是结点本身只能存在于一个进程中，且结点引用与结点一般是属于
+不同进程的。它的数据结构定义如下：
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">struct binder_ref {
+        /* Lookups needed: */
+        /*   node + proc =&gt; ref (transaction) */
+        /*   desc + proc =&gt; ref (transaction, inc/dec ref) */
+        /*   node =&gt; refs + procs (proc exit) */
+        int debug_id;
+        struct rb_node rb_node_desc;
+        struct rb_node rb_node_node;
+        struct hlist_node node_entry;
+        struct binder_proc *proc;
+        struct binder_node *node;
+        uint32_t desc;
+        int strong;
+        int weak;
+        struct binder_ref_death *death;
+};
+</pre>
+</div>
+
+<p>
+下面分别解释上述各个成员变量的意义：
+</p>
+<ol class="org-ol">
+<li><code>debug_id</code> ：同结点的 <code>debug_id</code> 意义一样，一个数据序号标记。
+</li>
+<li><code>rb_node_desc</code> ：代表 <code>binder_proc</code> 中红黑树 <code>refs_by_desc</code> 中的一个结点，以desc为索引，即结点引用的句柄号作为排序依据。
+</li>
+<li><code>rb_node_node</code> ：代表 <code>binder_proc</code> 中红黑树 <code>refs_by_node</code> 中的一个结点，以node为索引，即结点的内存地址作为排序依据。
+</li>
+<li><code>node_entry</code> ：作为node所拥有的结点引用链表中的一个结点
+</li>
+<li>proc：该结点引用相关联的 <code>binder_proc</code>
+</li>
+<li>node: 该结点引用所关联的结点
+</li>
+<li>desc：该结点引用的句柄号
+</li>
+<li>strong: 该结点引用的强引用计数
+</li>
+<li>weak: 该结点引用的弱引用计数
+</li>
+<li>death：该结点引用的死亡通知链表，主要通知它所引用的结点的死亡
+消息。
+</li>
+</ol>
+
+<p>
+系统中所有的Binder实体以及每个实体在各个进程中的引用都登记在驱动中；
+驱动需要记录Binder引用 -&gt;实体之间多对一的关系；为引用找到对应的实
+体；在某个进程中为实体创建或查找到对应的引用；记录Binder的归属地
+（位于哪个进程中）；
+</p>
+
+<p>
+函数
+</p>
+<pre class="example">
+static struct binder_ref binder_get_ref(struct binder_proc *proc, uint32_t desc)
+</pre>
+<p>
+用于查询某个句柄号为desc的 <code>struct binder_ref</code> 对象，而函数 
+</p>
+<pre class="example">
+static struct binder_ref *binder_get_ref_for_node(struct binder_proc *proc,  struct binder_node *node)
+</pre>
+
+<p>
+则是为某个结点对象创建一个结点引用对象。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> 结点引用计数管理</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+结点引用计数管理主要通过如下两个函数：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c">static int binder_inc_ref(struct binder_ref *ref, int strong,
+                          struct list_head *target_list)
+static int binder_dec_ref(struct binder_ref *ref, int strong)
+</pre>
+</div>
+
+<p>
+从 <code>binder_inc_ref</code> 里面调用 <code>binder_inc_node，internal</code> 为1，直接
+调用 <code>binder_inc_node</code> 时，internal为0。
+</p>
+
+<p>
+所以， <code>node-&gt;internal_strong_refs</code> 统计的是 <code>binder_ref</code> 对远程结点的强引用。
+对结点本身来说， <code>node-&gt;internal_strong_refs</code> 的值也反映了当前有多少个远
+程结点（ <code>binder_ref</code> ）强引用指向自己。
+</p>
+
+<p>
+<code>node-&gt;local_strong_refs</code> 则统计的是对本地结点的强引用，这个值反映了当
+前进程中有多少个强引用指向自己。
+</p>
+
+<p>
+<b>Binder驱动对结点引用计数的管理</b>
+</p>
+
+<p>
+用户空间可以通过如下一个命令来增加或减少结点的引用计数：
+</p>
+
+<ol class="org-ol">
+<li><code>BC_INCREFS</code>  
+</li>
+<li><code>BC_ACQUIRE</code>  
+</li>
+<li><code>BC_RELEASE</code>
+</li>
+<li><code>BC_DECREFS</code>
+</li>
+</ol>
+
+<p>
+IPCThreadState类中定义了如下几个相关接口：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c">incStrongHandle(int32_t handle)
+incWeakHandle(int32_t handle)
+decStrongHandle(int32_t handle)
+decWeakHandle(int32_t handle)
+</pre>
+</div>
+
+<p>
+分别会向驱动发送上述几个命令。
+这个命令带的参数是结点的句柄号。 这种方法是直接改变结点的引用计数。
+在驱动中也可能直接改变结点的引用计数，
+</p>
+<pre class="example">
+binder_inc_node(target_node, 1, 0, NULL)，
+</pre>
+<p>
+有一个共同点是target<sub>list参数都为NULL。</sub>
+</p>
+
+<p>
+第二种情况是，在处理TRANSACTION期间，Binder驱动改变了传输中的结点
+引用计数，然后通过如下几个命令返回给用户空间做处理：
+</p>
+<ol class="org-ol">
+<li><code>BR_ACQUIRE</code>
+</li>
+<li><code>BR_INCREFS</code>
+</li>
+<li><code>BR_RELEASE</code>
+</li>
+<li><code>BR_DECREFS</code>
+</li>
+</ol>
+
+<p>
+其中，当将创建本进程中的某个结点的结点引用对象时，需要传入一个
+<code>target_list</code> 参数，提交一个 <code>BINDER_WORK_NODE</code> 类型的
+<code>binder_work</code> ，以处理驱动
+中的结点引用计数管理，同时，以通过上述几个命令通知用户空间维护相对
+应的对象强弱引用计数。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">binder_inc_ref(ref, fp-&gt;type == BINDER_TYPE_HANDLE,
+                                       &amp;thread-&gt;todo);
+</pre>
+</div>
+
+<p>
+标识Node有强引用或弱引用，并增加引用计数。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">struct binder_work {
+        struct list_head entry;
+        enum {
+                BINDER_WORK_TRANSACTION = 1,  //代表一次进程间业务通信
+                BINDER_WORK_TRANSACTION_COMPLETE,
+                BINDER_WORK_NODE, //结点引用计数管理
+                BINDER_WORK_DEAD_BINDER,
+                BINDER_WORK_DEAD_BINDER_AND_CLEAR,
+                BINDER_WORK_CLEAR_DEATH_NOTIFICATION,
+        } type;
+};
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>

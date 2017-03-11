@@ -6,7 +6,7 @@
   <body>
     {% include header.html %}
 
-    
+
 <div class="container">
     <div class="row">
 
@@ -15,12 +15,12 @@
         {{content}}
 
         
-        <nav>
+        <!--<nav>
           <ul class="pager">
             <li><a href="#">Previous</a></li>
             <li><a href="#">Next</a></li>
           </ul>
-        </nav>
+        </nav>-->
 
 
         <div class="panel panel-primary">
@@ -55,51 +55,52 @@
         </div>
             
         <div class="sidebar-module">
-          <h4><span class="label label-info">文章存档</span></h4>
-          <ol class="list-unstyled">
+          <div class="list-group">
+            <a href="#" class="list-group-item active ">文章存档</a>
             {% assign lastyear = "2014" %}
             {% assign counter = 0 %}
             {% for post in site.posts %}
             {% assign currentyear = post.date | date: "%Y" %}
             {% if currentyear != lastyear %}
             {% if counter != 0 %}
-            <li><a  href="/chrono/{{lastyear}}/">{{lastyear}} <span class="badge">{{counter}}</span></a></li>
+            <a  class="list-group-item" href="/chrono/{{lastyear}}/"><span class="badge">{{counter}}</span>{{lastyear}} </a>
             {% endif %}
             {% assign counter = 0 %}
             {% assign lastyear = currentyear %}
             {% endif %}
             {% assign counter = counter | plus:1 %}
             {% endfor %}
-            <li><a  href="/chrono/{{lastyear}}/">{{lastyear}}<span class="badge">{{counter}}</span></a></li>
-          </ol>
+            <a  class="list-group-item" href="/chrono/{{lastyear}}/"><span class="badge">{{counter}}</span>{{lastyear}} </a>
+          </div>
         </div>
         <div class="sidebar-module">
-          <h4><span class="label label-info">文章分类</span></h4>
-          <ol class="list-unstyled">
+          <div class="list-group">
+            <a href="#" class="list-group-item active ">文章分类</a>
             {% for category in site.categories %}
             {% assign currentCategory = category | first %}
             {% assign counter = 0 %}
             
-            <li><a  href="/archives/{{ currentCategory }}/">{{ currentCategory }}
+            <a  class="list-group-item" href="/archives/{{ currentCategory }}/">
                 <span class="badge">
                 {% for post in site.categories[currentCategory] %}
                 {% assign counter = counter | plus:1 %}
                 {% endfor %}                
                 {{counter}}
-                </span></a>
-            </li>
+                </span>
+                {{ currentCategory }}</a>
+            
 
             {% endfor %}
-          </ol>
+          </div>
         </div>
         
         <div class="sidebar-module">
-          <h4><span class="label label-info">我的相关网站</span></h4>
-          <ol class="list-unstyled">
-            <li><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="https://github.com/fuyajun1983cn"> GitHub</a></li>
-            <li><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="#"> Facebook</a></li>
-            <li><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="http://blog.csdn.net/fuyajun01"> CSDN Blog</a></li>
-          </ol>
+          <ul class="list-group">
+            <li class="list-group-item active">网站互粉列表</li>
+            <li class="list-group-item"><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="https://github.com/fuyajun1983cn"> GitHub</a></li>
+            <li class="list-group-item"><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="#"> Facebook</a></li>
+            <li class="list-group-item"><span class="glyphicon  glyphicon-pushpin" aria-hidden="true"></span><a href="http://blog.csdn.net/fuyajun01"> CSDN Blog</a></li>
+          </ul>
         </div>
       </div><!-- /.blog-sidebar -->
 
