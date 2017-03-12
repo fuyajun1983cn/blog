@@ -174,13 +174,13 @@ h6, .h6 {
     #table-of-contents:hover #text-table-of-contents {
 	display: block;
 	padding: 0.5em;
-	margin-top: -1.5em; }
+	margin-top: -1.5em; }ls
 }
 
 @media screen
 {
     #table-of-contents {
-	float: right;
+	float: left;
 	border: 1px solid #CCC;
 	max-width: 50%;
 	overflow: auto;
