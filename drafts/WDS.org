@@ -1,0 +1,106 @@
+#+TITLE: WDS
+
+** WDS
+    Wireless Distribution System. 
+    
+    [[./images/2017/2017040701.png]]
+
+    NOTES:Same channel, Encryption KEY of WDS link
+
+    帧格式：
+
+    [[./images/2017/2017040702.png]]
+
+    WDS Modes:
+    - Bridge (Ap without beacon sending)
+    - Repeater (Ap with beacon sending)
+
+    No Loop Topology:
+    
+    [[./images/2017/2017040703.png]]
+    
+*** Setting up a WDS peer
+    WDS是IEEE 802.11的一个非标准扩展。 由于它是一个非标准扩展，各家芯
+    片厂商的驱动和固件实现都不一样，无法做到兼容，所以为了使用WDS， AP
+    和Repeater等无线设备的硬件和软件必须相同，以保证兼容。（不能是AP属
+    于一个厂商，Repeater来自另外一个厂商）。
+
+    创建一个WDS Peer的命令如下：
+    #+BEGIN_SRC sh
+      iw phy phy0 interface add wds0 type wds
+      iw dev wds0 set peer <MAC address>    
+    #+END_SRC
+
+    为了能让WDS功能正常工作， 驱动必须实现cfg80211的一个回调函数：
+    =set_wds_peer()= 。 由于mac80211已经实现了该回调函数，所以对应的基
+    于mac80211的驱动只需要支持创建WDS类型的接口即可。 当WDS功能启用时，
+    TX数据时，会将802.11帧的头部的第一个地址换成peer的地址。 
+
+*** Using 4-address for AP and client mode
+    In some situations it might be useful to run a network with an
+    Access Point and multiple clients, but with each client bridged to
+    a network behind it. For this to work, both the client and the AP
+    need to transmit 4-address frames, containing both source and
+    destination MAC addresses. 
+
+    Linux wireless has support for 4-address mode for AP and STAs but
+    each driver needs to define this capability explicitly. All
+    mac80211 drivers support 4-address mode if AP or STA modes of
+    operation are supported respectively. 
+
+    On the AP side you can enable 4-address frames for individual
+    clients by isolating them in separate AP VLANs which are
+    configured in 4-address mode. Such an AP VLAN will be limited to
+    one client only, and this client will be used as the destination
+    for all traffic on its interface, regardless of the destination
+    MAC address in the packet headers.  
+
+    hostapd启动时， =wds_sta= 必须置为1. 对于AP端时，驱动必须支持
+    =NL80211_IFTYPE_AP_VLAN= 接口类型，以及 wiphy flag
+    =WIPHY_FLAG_4ADDR_AP= 必须置起。 对于Client端，驱动必须支持
+    =NL80211_IFTYPE_STATION= 以及wiphy flag =WIPHY_FLAG_4ADDR_STATION=
+    必须置起。 
+
+*** Setting Up WDS
+    1. On AP side, when writing hostapd configuration file, make sure
+       to add: 
+       #+BEGIN_SRC sh
+         wds_sta=1
+         wds_bridge=br0       
+       #+END_SRC
+
+       When =4-address= enabled WDS client connects, an interface
+       appears with a name of =wlan0.sta1= (I am assuming additional
+       interfaces will appear as =wlan0.sta2= and so on if more
+       4-address enabled clients connect).  
+
+       The =wds_bridge= line in the hostapd configuration file will
+       automatically add the wlan0.sta to your nominated bridge,
+       e.g. br0. Alternatively, you can always do =brctl addif= and so
+       on.  
+
+       As one would hope, non 4-address clients continue to work as
+       normal and co-exist with 4-address clients.
+
+    2. On STA side, as specified in documentation, the interface has
+       to be brought up with 4addr on option, e.g. 
+       : iw phy phy0 interface add wlan_sta0 type station 4addr on
+
+       Bridge the 4-addr mode client interface (which is now connected
+       to AP side) wlan_sta0 to AP, e.g.
+       : brctl addif br0 wlan_sta0 wlan0
+
+       Make sure you disable DHCP on this device as DHCP is already
+       enabled on AP side and remember STA is simply a layer 2 device
+       now. 
+
+       Reference:
+       - Simple WDS without security between WDS peers, use
+         recommendations on
+         https://wireless.wiki.kernel.org/en/users/documentation/iw#setting_up_a_wds_peer
+
+       - Not-so simple WDS, where WDS link is secured by the fact that
+         it is really a modified STA-AP link (with all supported
+         authentication options available), use recommendations on
+         https://wireless.wiki.kernel.org/en/users/documentation/iw#using_4-address_for_ap_and_client_mode .
+

@@ -11,7 +11,40 @@
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
   <link rel="stylesheet" href="{{site.baseurl}}/assets/css/ie10-viewport-bug-workaround.css">
   <!--<link rel="stylesheet" href="{{ "/assets/css/worg.css" | prepend: site.baseurl }}">-->
+  {% if page.layout == "home"  %}
+  <link rel="stylesheet" href="{{ "/assets/css/octicons.min.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{"/assets/css/github-activity-0.1.4.min.css" | prepend: site.baseurl }}">
+  {% endif %}
   <link rel="stylesheet" href="{{ "/assets/css/main.css" | prepend: site.baseurl }}">
+
+  {% if page.layout == "freemind" %}
+  <style type="text/css">
+    li { list-style: none;  margin: 0; }
+    p { margin: 0; }
+    span.foldopened { color: white; font-size: xx-small;
+    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;
+    VISIBILITY: visible;
+    cursor:pointer; }
+
+
+    span.foldclosed { color: #666666; font-size: xx-small;
+    border-width: 1; font-family: monospace; padding: 0em 0.25em 0em 0.25em; background: #e0e0e0;
+    VISIBILITY: hidden;
+    cursor:pointer; }
+
+    span.foldspecial { color: #666666; font-size: xx-small; border-style: none solid solid none;
+    border-color: #CCCCCC; border-width: 1; font-family: sans-serif; padding: 0em 0.1em 0em 0.1em; background: #e0e0e0;
+    cursor:pointer; }
+
+    span.l { color: red; font-weight: bold; }
+
+    a.mapnode:link {text-decoration: none; color: black; }
+    a.mapnode:visited {text-decoration: none; color: black; }
+    a.mapnode:active {text-decoration: none; color: black; }
+    a.mapnode:hover {text-decoration: none; color: black; background: #eeeee0; }
+
+  </style>
+  {% endif %}
   
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
@@ -21,9 +54,9 @@
   <script src="{{"/assets/js/bootstrap.min.js" | prepend: site.baseurl }}"></script>
   <script>
     $(document).ready(function() {
-  $('div pre').each(function(i, block) {
-    hljs.highlightBlock(block);
-  });
-});
+        $('div pre').each(function(i, block) {
+            hljs.highlightBlock(block);
+        });
+    });
   </script>
 </head>

@@ -14,33 +14,6 @@
 
         {{content}}
 
-        
-        <!--<nav>
-          <ul class="pager">
-            <li><a href="#">Previous</a></li>
-            <li><a href="#">Next</a></li>
-          </ul>
-        </nav>-->
-  
-        <div class="panel panel-primary">
-  	      <!-- 多说评论框 start -->
-	      <div class="ds-thread " data-thread-key="{{page.id}}" data-title="{{ page.title }}" data-url="{{page.url}}"></div>
-          <!-- 多说评论框 end -->
-          <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-          <script type="text/javascript">
-            var duoshuoQuery = {short_name:"fuyajun1983cn"};
-	        (function() {
-		    var ds = document.createElement('script');
-		    ds.type = 'text/javascript';ds.async = true;
-		    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		    ds.charset = 'UTF-8';
-		    (document.getElementsByTagName('head')[0] 
-		    || document.getElementsByTagName('body')[0]).appendChild(ds);
-	        })();
-          </script>
-          <!-- 多说公共JS代码 end -->
-        </div>
-
       </div><!-- /.blog-main -->
 
       <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
@@ -109,6 +82,19 @@
 
 
 {% include footer.html %}
+
+  <script src="{{"/assets/js/mustache.min.js" | prepend: site.baseurl }}"></script>
+  <script src="{{"/assets/js/github-activity-0.1.4.min.js" | prepend: site.baseurl }}"></script>
+  <script>
+    function updateFeed(username) {
+        GitHubActivity.feed({ username: username, selector: '#feed', limit:5 });
+    }
+
+    $(document).ready(function() {
+        updateFeed('fuyajun1983cn');
+    });
+  </script>
+  
 </body>
 
 </html>
