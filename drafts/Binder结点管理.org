@@ -1,4 +1,6 @@
-* Binder结点管理
+#+TITLE: Binder结点管理
+
+* 概述
    在Binder驱动中，Binder结点随着进程IPC通信开始而生，随着进程IPC通信
    结束而亡，换句话说，Binder结点是维系IPC通信的基础，而且一个Binder
    结点也只能在完全无IPC通信的情况下被删除。本文将重点研究Binder结点

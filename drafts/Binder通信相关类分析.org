@@ -1,0 +1,242 @@
+
+#+TITLE: Binder通信相关的类简要分析
+
+ *一、BpBinder*
+
+ 这个类通常作为IPC通信的Client端，或者说Remote端，提供实际的IPC基础
+ 通信服务。在代码中通常不直接使用到该类，一般以成员变量的形式，包含
+ 于BpRefBase类中，通过remote()方法引用该成员变量。继承关系如下：
+
+ BpXXX --> BpInterface<IXXX> --> BpRefBase
+
+ 在BpXXX方法中，就可以直接通过remote()方法引用到BpBinder实例，继而
+ 利用其提供的IPC通信功能，通过Binder协议与另一端进行通信。
+
+ BpBinder类的定义说明
+
+ 成员变量分析：
+
+ #+BEGIN_SRC c++
+       
+   const   int32_t             mHandle;//handle for remote obj
+
+               void                reportOneDeath(const Obituary& obit);
+               bool                isDescriptorCached() const;
+
+       mutable Mutex               mLock;
+               volatile int32_t    mAlive;
+               volatile int32_t    mObitsSent; //we have already send Obit? can notify is object is already dead
+               Vector<Obituary>*   mObituaries;//dead notification listerners
+               ObjectManager       mObjects;
+               Parcel*             mConstantData;
+       mutable String16            mDescriptorCache;
+
+       
+ #+END_SRC
+ 
+ mHandle: 这是一个重要的成员变量，代表Binder驱动为一个远程对象分配
+ 的一个句柄，在Binder驱动中，通过该句柄号，找到对应的Binder引用结点，
+ 通过Binder引用结点，找到其引用的位于不同进程中的一个Binder结点，从
+ 而将利用该Binder结点将通信数据路由到通信的另一端所在的进程。
+
+ mLock：保护BpBinder对象的一些方法的访问，从而保证任何时刻不会同时
+ 执行两个或以上方法。
+
+ mAlive：Binder IPC通信是否处于活跃状态。
+
+ mObjects： 对象管理，主要是对Java Binder对象的管理。
+
+ mConstantData： 未使用
+
+ mDescriptorCache：保存接口描述信息。
+
+ 主要方法分析：
+
+ #+BEGIN_SRC c++
+   virtual status_t    transact(   uint32_t code,
+                                   const Parcel& data,
+                                   Parcel* reply,
+                                   uint32_t flags = 0);
+       
+ #+END_SRC
+ 
+ 该方法是Binder IPC通信的入口，其实质上是调用IPCThreadState类的
+ transact方法。
+
+ 如下两个接口则是提供监听远程对象死亡通知的接口。
+
+ #+BEGIN_SRC c++
+   virtual status_t    linkToDeath(const sp<DeathRecipient>& recipient,
+                                   void* cookie = NULL,
+                                   uint32_t flags = 0);
+   virtual status_t    unlinkToDeath(  const wp<DeathRecipient>& recipient,
+                                       void* cookie = NULL,
+                                       uint32_t flags = 0,
+                                       wp<DeathRecipient>* outRecipient = NULL);
+       
+ #+END_SRC
+ 
+
+ BpBinder对象作为远程对象的代理，它会跟踪远程对象的状态（实质上是在
+ 驱动中，跟踪Binder通信结点，结点死亡的信息也是通过驱动层向用户空间
+ 发送的），一旦接收到死亡通知，则会调用如下接口通知所有监听者：
+
+ : void  sendObituary();
+
+ 其会调用如下方法调用所有监听者提供的回调函数：
+ : void  reportOneDeath(const Obituary& obit);
+
+ *二、BBinder*
+
+ BBinder类作为Binder IPC通信的Server端或Local端，处理来自Client端或
+ Remote端的服务请求。它的主要方法就是处理请求：
+
+ #+BEGIN_SRC c++
+   status_t BBinder::transact(
+       uint32_t code, const Parcel& data, Parcel* reply, uint32_t flags)
+       
+ #+END_SRC
+ 
+ 在IPCThreadState中，是通过如下方式调用到上述的接口的：
+
+ #+BEGIN_SRC c++
+   IPCThreadState(979)：         
+   case BR_TRANSACTION:
+              …   
+   if (tr.target.ptr) {//local 
+                   sp<BBinder> b((BBinder*)tr.cookie);
+                   const status_t error = b->transact(tr.code, buffer, &reply, tr.flags);
+                   if (error < NO_ERROR) reply.setError(error);
+
+               } else {//remote
+                   const status_t error = the_context_object->transact(tr.code, buffer, &reply, tr.flags);
+                   if (error < NO_ERROR) reply.setError(error);
+               }
+       
+ #+END_SRC
+
+ *三、Java层类*
+
+ Java层的类主要有Binder和BinderProxy，其中Binder跟BBinder一样，属于
+ Server或Local端，而BinderProxy则与BpBinder一样，属于Client端或
+ Remote端。
+
+ 对于BinderProxy类对象，跟BpBinder一样，同样是作为XXXProxy的成员变
+ 量的形式包含于其中。
+
+ XXXProxy --> IXXX --> IInterface.
+
+ 在JNI层，定义了两个转换函数：
+ #+BEGIN_SRC c++
+   jobject javaObjectForIBinder(JNIEnv* env, const sp<IBinder>& val);
+   sp<IBinder> ibinderForJavaObject(JNIEnv* env, jobject obj);
+
+ #+END_SRC
+
+ 上述两种函数提供了Java对象（主要是Binder和BinderProxy对象）与
+ Native层IBinder对象之间的相互转换接口。
+
+ 当我们调用transact方法时，会经历如下一些过程：
+
+ #+BEGIN_SRC java
+   //in BinderProxy.java
+   public native boolean transact(int code, Parcel data, Parcel reply,
+               int flags) throws RemoteException;
+       
+ #+END_SRC
+
+ -->
+
+ #+BEGIN_SRC c++
+   //in android_util_Binder.cpp
+   static jboolean android_os_BinderProxy_transact(JNIEnv* env, jobject obj,
+           jint code, jobject dataObj, jobject replyObj, jint flags) // throws RemoteException
+   {
+        …
+       IBinder* target = (IBinder*)
+           env->GetIntField(obj, gBinderProxyOffsets.mObject);
+       …
+       //printf("Transact from Java code to %p sending: ", target); data->print();
+       status_t err = target->transact(code, *data, reply, flags);
+       …
+       return JNI_FALSE;
+   }
+       
+ #+END_SRC
+
+ 其中gBinderProxyOffsets.mObject是通过javaObjectForIBinder设置的，
+ 它的原型如下：
+ : jobject javaObjectForIBinder(JNIEnv* env, const sp<IBinder>& val);
+
+ 对于上述函数，除非参数val是JavaBBinder（继承自BBinder）对象，否则，
+ 就创建一个BinderProxy对象，它与一个BpBinder对象关联。
+
+ --> 
+
+ 接下来就会调用某个IBinder(C++类)对象的transact方法。这个IBinder对
+ 象是BpBinder类型的，即：
+ : BpBinder::transact(…) 
+
+ -->
+ : IPCThreadState::transact(…)
+
+ 它会向Binder驱动发送一个 =BC_TRANSACTION= 命令，Binder驱动进行处理，将
+ 请求路由给通信的另一端，并通过命令 =BR_TRANSACTION= 告知用户空间，有新
+ 的通信请求。在介绍BBinder的时候，我们提到过，接收端会调用
+ BBinder::transact(…)来处理请求，对于Java层的通信来说，则会实际调
+ 用JavaBBinder::transact(…)来处理请求，而实际上会调用
+ onTransact(…)（重载了BBinder的方法），如下所示：
+
+ #+BEGIN_SRC c++
+   class JavaBBinder : public BBinder
+   {
+     …
+     protected:
+     …
+
+     virtual status_t onTransact(
+                                 uint32_t code, const Parcel& data, Parcel* reply, uint32_t flags = 0)
+     {
+       …
+
+         //printf("Transact from %p to Java code sending: ", this);
+         //data.print();
+         //printf("\n");
+         jboolean res = env->CallBooleanMethod(mObject, gBinderOffsets.mExecTransact,
+                                               code, (int32_t)&data, (int32_t)reply, flags);
+         
+       …
+
+         // Need to always call through the native implementation of
+         // SYSPROPS_TRANSACTION.
+         if (code == SYSPROPS_TRANSACTION) {
+           BBinder::onTransact(code, data, reply, flags);
+         }
+
+       …
+         }
+
+     …
+   };
+       
+ #+END_SRC
+
+ -->
+
+ #+BEGIN_SRC java
+   //in Binder.java
+   // Entry point from android_util_Binder.cpp's onTransact
+       private boolean execTransact(int code, int dataObj, int replyObj,
+               int flags) {
+           …
+           boolean res;
+           try {
+               res = onTransact(code, data, reply, flags);
+           } …
+
+           return res;
+       }
+       
+ #+END_SRC
+
+ 最终调用到了Binder类的onTransact方法。从Binder类派生的类都会重载该方法。
