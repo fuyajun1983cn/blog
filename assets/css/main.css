@@ -315,3 +315,22 @@ h6, .h6 {
 }
 
 /* Notes End */
+
+.top {
+    position:fixed;
+    right:10px;
+    bottom:10px;
+    display:block;
+    text-indent:-999em;
+    cursor:pointer;
+    width:61px;
+    height:61px;background:url(../../images/top.png) 0 0 no-repeat;
+    z-index:100;
+    display:none;
+    _position:absolute;
+    _bottom:auto;
+}
+
+.top:hover {
+    background-position:0 -70px;
+}
