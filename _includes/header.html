@@ -1,7 +1,28 @@
+{% if page.layout == "presentation" %}
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 blog-main">
+        <div class="blog-header">
+          <h1 class="blog-title">{{site.title}}</h1>
+          <p class="lead blog-description">{{site.description}}</p>
+        </div>
+      </div>
+      <div class="col-sm-4 blog-main">
+        <ul class="nav nav-pills pull-right">
+          <li role="presentation" class="active"><a href="/"><span class="glyphicon glyphicon-user"></span> 博客主页</a></li>
+          <li role="presentation"><a href="http://ifjy.me"><span class="glyphicon glyphicon-home"></span> 个人主页</a></li>
+        </ul>
+      </div>
+    </div>
+      
+  </div>
+</nav>
+{% else %}
 <div class="container">
   <div class="blog-header">
-      <h1 class="blog-title">{{site.title}}</h1>
-      <p class="lead blog-description">{{site.description}}</p>
+    <h1 class="blog-title">{{site.title}}</h1>
+    <p class="lead blog-description">{{site.description}}</p>
   </div>
 
   <div class="header clearfix blog-nav">
@@ -15,3 +36,4 @@
   </div>
   
 </div>
+{% endif %}
