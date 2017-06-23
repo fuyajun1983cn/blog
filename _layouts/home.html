@@ -83,8 +83,8 @@
 
 {% include footer.html %}
 
-  <script src="{{"/assets/js/mustache.min.js" | prepend: site.baseurl }}"></script>
-  <script src="{{"/assets/js/github-activity-0.1.4.min.js" | prepend: site.baseurl }}"></script>
+  <script src="{{"/assets/plugins/github-activity-0.1.4/mustache.min.js" | prepend: site.baseurl }}"></script>
+  <script src="{{"/assets/plugins/github-activity-0.1.4/github-activity-0.1.4.min.js" | prepend: site.baseurl }}"></script>
   <script>
     function updateFeed(username) {
         GitHubActivity.feed({ username: username, selector: '#feed', limit:5 });

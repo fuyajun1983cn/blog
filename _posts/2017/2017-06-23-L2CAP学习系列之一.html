@@ -1,0 +1,115 @@
+---
+layout: ppt
+date: 2017-06-23
+author: 山庄来客
+update: 2017-06-18
+categories: bluetooth
+---
+
+<section>
+  <h1> L2CAP Channel </h1>
+  <div id="time">
+    <script>
+      document.getElementById('time').innerHTML=new Date().toLocaleString();
+    </script>
+</section>
+<section data-markdown>
+  * L2CAP is based around the concept of ’channels’.
+  * Each one of the endpoints of an L2CAP channel is referred to by a **channel identifier (CID)**.
+</section>
+<section data-markdown>
+  ## CHANNEL IDENTIFIERS
+  * The null identifier (0x0000) shall never be used as a destination endpoint.
+  * Identifiers from 0x0001 to 0x003F are reserved for specific L2CAP functions.
+  * Identifiers from 0x0001 to 0x003F are referred to as **Fixed Channels**.
+</section>
+<section data-markdown>
+  ## Signaling channel
+  * Fixed Channel 0x0001 is the L2CAP Signaling channel.
+  * Fixed Channel 0x0005 is the L2CAP LE Signaling channel.
+  * Those two should be supported at a minimum.
+</section>
+<section data-markdown>
+  ## The characteristics of fixed channel
+  * defined on a per channel basis.
+  * include configuration parameters (e.g., reliability, MTU size, QoS), security,
+  * the ability to change parameters using the L2CAP configuration mechanism.
+</section>
+<section data-markdown>
+  ## Fixed Channels
+  * Fixed channels are available as soon as the ACL-U or LE-U logical link is set up.
+  * Fixed channels should be initialized when the ACL-U or LEU logical link is set up.
+  * Fixed channels shall only run over ACL-U, ASB-U, or LE-U logical links.
+  * Fixed channels shall not be moved.
+</section>
+<section data-markdown>
+  ## Non-Fixed Channels
+  * Implementations are free to manage the remaining CIDs
+  * Two simultaneously active L2CAP channels shall not share the same CID.
+  * A different CID name space exists for each ACL-U, ASB-U, and LE-U logical link.
+  * The AMP-U logical link shares the CID name space with its associated ACL-U logical link.
+</section>
+<section data-markdown>
+  ![01](http://docs.ifjy.me/contents/wireless/025/images/004.png)
+</section>
+<section data-markdown>
+  ## Dynamically allocated CID
+  * CID allocattion is local to a particular logical link.
+  * When shared the same CID on the same channel with several remote  devices, it still can be distinguished by associating each remote CID with a different device.
+  * When shared the same CID with the same remote device, they will be bound to a different logical link.
+</section>
+<section data-markdown>
+  ## OPERATION BETWEEN DEVICES
+  * The connection-oriented data channels represent a connection between two devices.
+  * a CID, combined with the logical link, identifies each endpoint of the channel.
+</section>
+<section data-markdown>
+  * for connectionless channel, when
+    * used for broadcast transmissions, data flow in a single didrection.  
+    * used for unicast transmissions, data flow in either direction between a master and a slave.  
+</section>
+<section data-markdown>
+  ## Fixed channel 0x0001(Signal channel)
+  * used to create and establish connection-oriented data channels
+  * negotiate changes in the characteristics of connection-oriented channels
+  * discover characteristics of the connectionless channel operating over the ACL-U logical link.
+</section>
+<section data-markdown>
+  ## Fixed channel CID (0x0002)
+  * reserved for all incoming and outgoing connectionless data traffic, whether broadcast or unicast.
+</section>
+<section data-markdown>
+  ![03](http://docs.ifjy.me/contents/wireless/025/images/002.png)
+</section>
+<section data-markdown>
+  ## OPERATION BETWEEN LAYERS
+  * L2CAP implementations transfer data between upper layer protocols and the lower layer protocol.
+  * L2CAP implementation should export a number of services.
+  * L2CAP implementation shall also support a set of signaling commands.
+</section>
+<section data-markdown>
+  * L2CAP implementations should also be prepared to  
+    * accept certain types of events from lower layers.
+    * generate events to upper layers.
+</section>
+<section data-markdown>
+  ![02](http://docs.ifjy.me/contents/wireless/025/images/003.png)
+</section>
+<section data-markdown>
+  ## MODES OF OPERATION
+  * Basic L2CAP Mode (equivalent to L2CAP specification in Bluetooth v1.1)
+  * Flow Control Mode
+  * Retransmission Mode
+  * Enhanced Retransmission Mode
+  * Streaming Mode
+  * LE Credit Based Flow Control Mode
+</section>
+<section data-markdown>
+  ## MAPPING CHANNELS TO LOGICAL LINKS
+  * L2CAP maps channels to Controller logical links, which in turn run over Controller physical links.
+  * All logical links going between a local Controller and remote Controller run over a single physical link.
+</section>
+<section data-markdown>
+  * There is one ACL-U logical link per BR/EDR physical link and one LE-U logical link per LE physical link.
+  * There may be multiple AMP-U logical links per AMP physical link.
+</section>
