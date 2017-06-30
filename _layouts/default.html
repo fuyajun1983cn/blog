@@ -21,7 +21,10 @@
             <li><a href="#">Next</a></li>
           </ul>
         </nav>-->
-  
+
+        {% if page.layout == "donate" %}
+        {% elsif page.layout == "ppt" %}
+        {% else %}
         <div class="panel panel-primary">
 
             <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
@@ -45,6 +48,7 @@
             </script>
 
         </div>
+        {% endif %}
 
       </div><!-- /.blog-main -->
 
