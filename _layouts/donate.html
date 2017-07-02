@@ -2,23 +2,32 @@
 layout: default
 ---
 
+{% if page.title == "关于" %}
 <section>
   <header>
-    <h2>关于本站</h2>
+    <div class="note info">
+      <h3><b>关于本站</b></h3>
+      <p>
+        本站文章引用权利声明
+      </p>
+    </div>
   </header>
   <p>
     本站主要记录了本人在工作和学习中产生的一些笔记，本着知识分享的精神分享出来供有需要的人参考，如果发现有错误的地方也欢迎大家指正。本人会尽最大能力保证内容的质量。
   </p>
   <p>
-    本站所有的内容都允许自由转载，如果您能标明文章出处，将是对我的莫大尊重与支持，本人也会非常感谢。
-  </p>
-  <p>
-    最后，如果您有意愿，可以为本站的文章进行打赏支持:-)
+    本站所有的内容都可以自由转载，转载时请标明文章出处。
   </p>
 </section>
+{% endif %}
 <section>
   <header>
-    <h2>打赏支持</h2>
+    <div class="note">
+      <h3><b>打赏支持</b></h3>
+      <p>
+        如果您有意愿，可以为本站的文章进行打赏支持，感谢支持:-)
+      </p>
+    </div>
   </header>
   <div>
     <img src="/images/pay/alipay.jpg" class="img-responsive"/>

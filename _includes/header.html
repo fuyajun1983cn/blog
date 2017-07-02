@@ -1,23 +1,15 @@
 {% if page.layout == "ppt" %}
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-8 blog-main">
-        <div class="blog-header">
-          <h1 class="blog-title">{{site.title}}</h1>
-          <p class="lead blog-description">{{site.description}}</p>
-        </div>
-      </div>
-      <div class="col-sm-4 blog-main">
-        <ul class="nav nav-pills pull-right">
-          <li role="presentation" class="active"><a href="/"><span class="glyphicon glyphicon-user"></span> 博客主页</a></li>
-          <li role="presentation"><a href="http://ifjy.me"><span class="glyphicon glyphicon-home"></span> 个人主页</a></li>
-        </ul>
-      </div>
-    </div>
-      
+<div class="container">
+  <div class="header clearfix blog-nav">
+    <nav>
+      <ul class="nav nav-pills pull-right">
+        <li role="presentation" class="active"><a href="/"><span class="glyphicon glyphicon-user"></span> 返回主页</a></li>
+        <li role="presentation"><a href="http://ifjy.me"><span class="glyphicon glyphicon-home"></span> 个人主页</a></li>
+        <li role="presentation"><a href="/about/"><span class="glyphicon glyphicon-info-sign"></span> 关于本站</a></li>
+      </ul>
+    </nav>
   </div>
-</nav>
+</div>
 {% else %}
 <div class="container">
   <div class="blog-header">
@@ -30,6 +22,7 @@
       <ul class="nav nav-pills pull-right">
         <li role="presentation" class="active"><a href="/"><span class="glyphicon glyphicon-user"></span> 博客主页</a></li>
         <li role="presentation"><a href="http://ifjy.me"><span class="glyphicon glyphicon-home"></span> 个人主页</a></li>
+        <li role="presentation"><a href="/about/"><span class="glyphicon glyphicon-info-sign"></span> 关于本站</a></li>
       </ul>
     </nav>
     <p class="h2"><code class="maotizi">{{site.slogan}}</code></p>
