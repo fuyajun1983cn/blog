@@ -32,8 +32,16 @@
 			});
 
   </script>
-
+  <script>
+    $("#ppt-header").css("display", "none");
+    $("body").mousemove(function(event) {
+    if (event.pageY < 60)
+       $("#ppt-header").css("display", "block");
+    else
+       $("#ppt-header").css("display", "none");
+    });
   </script>
+
   
   {% endif %}
 
