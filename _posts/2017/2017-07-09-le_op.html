@@ -1,0 +1,162 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section data-markdown>
+  ## Overview   
+
+  * the LE radio operates in the unlicensed 2.4 GHz ISM bannd.
+  * The LE system employs a frequency hopping transceiver.
+  * LE radio operation uses a shaped, binary frequency modulation to minimize transceiver complexity.
+
+</section>
+<section>
+  <h3>Overview</h3>
+  <div class="ppt">
+	<div class="ppt-left">
+	  <ul>
+		<li>The mandatory data rates: 1Mbps.</li>
+		<li>May  support 2Mbps.</li>
+		<li>LE employs two multiple access schemes:</li>
+		<ul>
+		  <li>Frequency division multiple access(FDMA)</li>
+		  <li>time division multiple access(TDMA)</li>
+		</ul>
+	  </ul>
+	</div>
+	<div class="ppt-right">
+	  <ul>
+		<li>Forty (40) physical channels, separated by 2 MHz, are used in the FDMA scheme.</li>
+		<ul>
+		  <li>Three (3) are used as primary advertising channels.</li>
+		  <li>37 are used as secondary advertising channels and as data channels.</li>
+		</ul>
+	  </ul>
+	</div>
+  </div>
+</section>
+<section data-markdown>
+  ## Physical  Channel
+
+  * The physical channel is sub-divided into time units known as events.
+  * There are four types of events:
+  * Advertising  
+  * Extended Advertising
+  * Periodic Advertising
+  * Connection
+  
+</section>
+<section data-markdown>
+  ## Device  Role
+
+  * advertisers.
+  transmit advertising packets on the advertising PHY channels
+  * scanners
+  receive advertising packets on the advertising channels without the intention to connect to the advertising device 
+  * initiators
+  listen for connectable advertising packets.  
+  
+</section>
+<section data-markdown>
+  ## Device Role
+
+  * Once a connection is established, the initiator becomes the master device.
+  * the advertising device becomes the slave device.
+  * Connection events are used to send data packets between the master and slave devices.
+  
+</section>
+<section data-markdown>
+  ## Connection Events
+
+  * channel hopping occurs at the start of each connection event.
+  * the master and slave alternate sending data packets using the same data PHY channel within a  connection event.
+  * the master  initiates the beginning of each connection event  and can end each connection event at any time.
+  
+</section>
+<section data-markdown>
+  ## Connection Events  
+
+  ![03](/images/2017/2017061203.png)
+  
+</section>
+<section data-markdown>
+  ## data hopping pattern
+
+  * in the connection request sent by an  initiating device, a  field will  determine the specific frequency hopping pattern.
+  * The hopping  frequency pattern can be adapted to exclude  a  portion of the frequencies.
+</section>
+<section data-markdown>
+  ## Hierachy of links
+
+  * the hiearchy above physical channels are:
+  * physical channel
+  * physical link
+  * logical transport
+  * logical link
+  * L2CAP channel
+
+</section>
+<section data-markdown>
+  ## Restrictions of Physical Links
+
+  * Within a physical channel, a physical link is formed between devices.
+  * There is a physical link between each slave and master.
+  * Slaves are permitted to have physical links to more than one master at a time.
+</section>
+<section data-markdown>
+  ## Restrictions of Physical Links
+  
+  * A device is permitted to be  master and slave at the same time.
+  * Physical links are not formed directly between the slaves in a piconet.
+  
+</section>
+<section data-markdown>
+  ## Logical link
+
+  * The physical link is used as a transport for one or more logical links that support asynchronous traffic.
+  * Traffic on logical links is multiplexed onto the physical link. 
+</section>
+<section data-markdown>
+  ## control protocol
+
+  * carried over logical links
+  * This is the link layer protocol (LL).
+  * Devices that are active in a piconet have a default LE asynchronous connection logical transport.
+  * The default LE ACL is the one that is created whenever a device joins a piconet.
+  
+</section>
+<section data-markdown>
+  ## Link Layer
+
+  * The Link Layer function uses the LL protocol to control the operation of devices
+  * provide services to manage the lower architectural layers(PHY & LL)
+
+</section>
+<section data-markdown>
+  ## L2CAP layer
+
+  * provides a channel-based abstraction to applications and services.
+  * It carries out fragmentation and de-fragmentation of application data.
+  * multiplexing and de-multiplexing of multiple channels over a shared logical link.
+  * L2CAP has a protocol control channel that is carried over the primary ACL logical transport.
+  
+</section>
+<section data-markdown>
+  ## Security Manager protocol (SMP)
+
+  * reside on top of L2CAP.
+  * uses a fixed L2CAP channel to implement the security functions between devices.
+  
+</section>
+<section data-markdown>
+  ## Attribute protocol (ATT)
+
+  * provides a method to communicate small amounts of data over a fixed L2CAP channel.
+  * also used by devices to determine the services and capabilities of other devices.
+  * may also be used over BR/EDR.
+  
+</section>

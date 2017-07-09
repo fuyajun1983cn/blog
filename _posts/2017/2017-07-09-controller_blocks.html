@@ -1,0 +1,76 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section data-markdown>
+  ## Device Manager
+
+  * the functional block in the baseband that controls the general behavior of the Bluetooth device.
+  * responsible for all operations not directly related to data transport such as:
+  * Inquiry
+  * Connect
+  * make local device discoverable or connetable.
+  
+</section>
+<section data-markdown>
+  ## Device Manager
+
+  * need access to the transport medium to carry out its functions.
+  * controls local device behavior by a number of the HCI commands such as:
+  * manage local name
+  * store link keys.
+  * other functionality.
+  
+</section>
+<section data-markdown>
+  ## Link Manager
+
+  * responsible for managing logical links(or related logical transports):
+  * creation
+  * modification
+  * release
+  * update of parameters related to physical links between devices.
+  * using LMP in BR/EDR and LL in LE to achieve the above functions.
+  
+</section>
+<section data-markdown>
+  ## Link Manager
+
+  * LM or LL protocol allows:
+  * creation of new logical links and logical transports when required.
+  * the general control of link and transport attributes such as:
+  * enabling of encryption on the logical transport
+  * adapting of TX power in BR/EDR on the physical link.
+  *adjusting of QoS Settings in  BR/EDR for a logical link.
+  
+</section>
+<section data-markdown>
+  ## Baseband Resource Manager
+
+  * responsible for all access to the radio medium.
+  * has two main functions:
+  * a scheduler that grants time on the physical channels.
+  * negotiate access contracts with other entities.
+  * An access contract is effectively a commitment to deliver a certain QoS reuirement.
+  * realignment time between slots on the original physical channel and slots on the new physical channel.
+  
+</section>
+<section data-markdown>
+  ## Link Controller
+
+  * responsible for the encoding and decoding of Bluetooth packets from data payload.
+  * and parameters related to the physical channel, logical transport and logical link.
+  * carry out link control protocol signaling in BR/EDR and link layer protocol in LE. 
+  
+</section>
+<section data-markdown>
+  ## PHY
+
+  * responsible for transmitting and receiving packets of information on the physical channel.
+
+</section>
+

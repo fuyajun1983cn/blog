@@ -1,0 +1,104 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section>
+  <h2>Overview</h2>
+  <div class="ppt"> 
+	<ul>
+	  <li>The Bluetooth data transport system follows a layered architecture.</li>
+	</ul>
+
+	<img src="images/2017061204.png" class="img-respective"/>
+  </div>
+  
+</section>
+<section data-markdown>
+  ## A minimal implementation of BR/EDR
+
+  * the four lowest layers associated protocols
+  * one common service layer protocol
+  * the Service Discovery Protocol (SDP)
+  * the overal profile requirements defined in GAP.
+</section>
+<section data-markdown>
+  ## A minimal implementation of LE
+
+  * the four lowest layers and associated protocols.
+  * two common service layer protocols
+  * the Security Manager (SM)
+  * Attribute Protocol (ATT)
+  * the overall profile requirements specified in the GATT and GAP.
+  
+</section>
+<section data-markdown>
+  ## Core blocks
+
+  * Link Manager, Link Controller and BR/EDR Radio blocks comprise a BR/EDR Controller.
+  * An AMP PAL, AMP MAC, and AMP PHY comprise an AMP Controller.
+  * Link Manager, Link Controller and LE Radio blocks comprise an LE Controller.
+  
+</section>
+<section data-markdown>
+  ## Core Blocks
+
+  * L2CAP, SDP and GAP blocks comprise a BR/EDR Host.
+  * L2CAP, SMP, Attribute protocol, GAP and Generic Attribute Profile (GATT) blocks comprise an LE Host.
+  * A BR/EDR/LE Host combines the set of blocks from each respective Host.
+  
+</section>
+<section data-markdown>
+  ## Core System Protocols
+
+  * Radio (PHY) protocol
+  * Link Control (LC) and Link Manager (LM) protocol or Link Layer (LL) protocol
+  * AMP PAL
+  * Logical Link Control and Adaptation protocol (L2CAP)
+  * AMP Manager Protocol.
+  
+</section>
+<section data-markdown>
+  ## Service Layer Protocols
+
+  * Service Discovery Protocol (SDP)
+  * Attribute Protocol (ATT)
+  
+</section>
+<section data-markdown>
+  ## Service Types
+
+  * device control services
+  >modify the behavior and modes of a Bluetooth device
+  * transport control services
+  > create, modify and release traffic bearers (channels and links)
+  * data services
+  > submit data for transmission over traffic bearers.
+  
+</section>
+<section data-markdown>
+  ## Host Controller Interface (HCI)
+
+  * the standard service interface between Controller and Host.
+  * Implementation of this standard interface is optional.
+  
+</section>
+<section data-markdown>
+  ## L2CAP
+
+  * it's assumed that the Controllers have limited data buffering capabilities compared with the Host.
+  * L2CAP layer is expected to carry out some simple resource management when submitting data to Controller.
+  * responsible for data segmentation and assembly, QoS commitments.
+  
+</section>
+<section data-markdown>
+  ## Reliable Communication
+
+  * basic acknowledgment/repeat request (ARQ) protocol under Controllers.
+  * The L2CAP layer can optionally provide a further error detection and retransmission.
+  * The L2CAP layer can further optionally provide a window-based flow control in the receiving side.
+  
+</section>

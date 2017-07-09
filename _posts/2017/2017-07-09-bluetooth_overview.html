@@ -1,0 +1,91 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section data-markdown>
+  ## What's Bluetooth   
+
+  * a short-range communications system.
+  * robustness,lower power consumption and low cost.
+  
+</section>
+<section data-markdown>
+  ## Two Forms of Bluetooth Technology
+
+  * Basic Rate(BR) & Low Energy(LE)
+  * Both includes
+  1. device discovery  
+  2. connection establishment  
+  3. connection mechanisims
+</section>
+<section>
+  <h3>Basic Rate(BR)</h3>
+  <div class="ppt">
+	<div class="ppt-left">
+	  <ul>
+		<li>Include optional </li>
+		<ul>
+		  <li>Enhanced Data Rate (EDR)</li>
+		  <li>Alternate Media Access Control (MAC) Physical (PHY) layer extensions.</li>
+		</ul>
+	</div>
+	<div class="ppt-right">
+	  <ul>
+		<li>Offers</li>
+		<ul>
+		  <li>synchronous connections</li>
+		  <li>asynchronous connections</li>
+		</ul>
+		<li>Data Rate</li>
+		<ul>
+		  <li>for BR, 721.2kb/s</li>
+		  <li>for EDR, 2.1Mb/s</li>
+		  <li>for HS with 802.11 AMP, 54Mb/s</li>
+		</ul>
+	  </ul>
+	</div>	
+  </div>
+</section>
+<section data-markdown>
+  ## Low Energy(LE)
+
+  * Designed for
+  * lower current consumption
+  * lower complexity  
+  * lower cost than BR/EDR  
+  * for use cases with lower data rates & lower duty cycles.
+  
+</section>
+<section data-markdown>
+  ## Bluetooth core system
+
+  * Consists of
+  * a Host 
+  * one or more  Controllers.
+  * Host is a logical entity defined as all the layers below the non-core profiles and above the HCI .
+  * Controller is defined as  all the layers below the  HCI layers.
+  * There are two types of Controllers: Primary Controllers & Secondary Controllers.  
+  
+</section>
+<section data-markdown>
+  ## Possible Configurations
+
+  * a BR/EDR Controller including the Radio, Baseband, Link Manager and optionally HCI.
+  * an LE Controller including the LE PHY, Link Layer and optionally HCI.
+  * a combined BR/EDR Controller portion and LE Controller portion into a single Controller.
+  * may additionally have one or more Secondary Controllers. 
+</section>
+<section data-markdown>
+  ## Bluetooth Host and Controller Combinations
+
+  ![01](/images/2017/2017061201.png)
+</section>
+<section data-markdown>
+  ## Bluetooth Host and Controller Combinations
+
+  ![02](/images/2017/2017061202.png)
+</section>

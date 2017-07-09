@@ -1,0 +1,195 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section data-markdown>
+  ## Serveral Common Bluetooth Profiles                   
+</section>
+<section>
+  <h3>A/V Remote Control Profile(AVRCP)</h3>
+  <div class="ppt">
+	<div class="ppt-left">
+	  <p>This profile is commonly used in conjunction with A2DP to 
+		provide media control, like skipping  tracks, play, pause, 
+		and media volume control.</p>
+	  <img src="images/2017070801.png" class="img-responsive"/>
+	</div>
+	<div class="ppt-right">
+	  <ul>
+		<li>Defined device “controller” and “target” roles.</li>
+		<li>Control commands, content metadata and browsing.</li>
+		<li>IEEE 1394 AV/C  protocol control.</li>
+		<li>Asynchronous (ACL) Bluetooth connectivity.</li>
+	  </ul>
+	</div>
+  </div>
+</section>
+<section>
+  <h3>Video Distribution Profile(VDP)</h3>
+  <div class="ppt">
+	<div class="ppt-left">
+	  <ul>
+		<li>MPEG/H.323 compliant video distribution</li>
+		<li>“Streaming” video transfer</li>
+		<li>“Streaming” video transfer</li>
+		<li>Real-Time Protocol (RTP) encapsulation</li>
+		<li>Asynchronous (ACL) Bluetooth connectivity.</li>
+	  </ul>
+	</div>
+	<div class="ppt-right">
+	  <img src="images/2017070802.png" class="img-responsive"/>
+	</div>
+  </div>
+</section>
+<section>
+  <h3>Advanced Audio Distribution Profile(A2DP)</h3>
+  <div class="ppt">
+	<div class="ppt-left">
+	  <ul>
+		<li>High quality mono/stereo audio distribution</li>
+		<li>“Streaming” audio transfer</li>
+		<li>“Streaming” audio transfer</li>
+		<li>Real-Time Protocol (RTP) encapsulation.</li>
+		<li>Asynchronous (ACL) Bluetooth connectivity.</li>
+	  </ul>
+	</div>
+	<div class="ppt-right">
+	  <ul>
+		<li>Audio stream from Box to headphone or</li>
+		<li>Audio stream from microphone to Box.</li>
+	  </ul>
+	  <img src="images/2017070803.png" class="img-responsive"/>
+	</div>
+  </div>
+</section>
+<section>
+  <h3>Global Navigation Satellite System Profile(GNSS)</h3>
+  <div class="ppt">
+	<ul>
+	  <li>Generic Navigation Satellite System</li>
+	  <ul>
+		<li>Create a wireless serial link so a device can share its GPS position data using the NMEA-0183 protocol.</li>
+	  </ul>
+	</ul>
+	<img src="images/2017070804.png" class="img-responsive"/>
+  </div>
+</section>
+<section>
+  <h3>SIM Access Profile(SAP)</h3>
+  <div class="ppt">
+	<ul>
+	  <li>The idea of SAP is to let the car use the SIM card of a phone as it’s own network adapter(e.g. GSM module and antenna.)</li>
+	  <li>Enables:</li>
+	  <ul>
+		<li>Better reception by using car’s external antenna.</li>
+		<li>Improved battery life since the phone’s network module can be powered down.</li>
+	  </ul>
+	</ul>
+	<img src="images/2017070805.png" class="img-responsive"/>
+  </div>
+</section>
+<section>
+  <h3>Dial-up Network Profile(DUN)</h3>
+  <div class="ppt">
+	<ul>
+	  <li>Dial-up Networking Profile(DUN)<li>
+		<ul>
+		  <li>The network connected device acts as a serial port modem.</li>
+		  <li>Progressively being replaced by PAN.</li>
+		</ul>
+	  <li>Personal Area Networking Profile (PAN)</li>
+	  <li>Bluetooth Network Encapsulation(BNEP)</li>
+	  <ul>
+		<li>The Bluetooth stacks acts as a network adaptor. </li>
+		<li>The IP layer above then takes care of creating an IP network and optionally sharing internet connectivity.</li>
+		<li>Increasingly popular.</li>
+	  </ul>
+	</ul>
+	<img src="images/2017070806.png" class="img-responsive"/>
+  </div>
+</section>
+<section>
+  <h3>Message Access Profile(MAP)</h3>
+  <div class="ppt">
+	<ul>
+	  <li>Enable a client device to browse, delete, download, or upload messages to/from a server.</li>
+	  <li>Servers may notify clients of certain events(e.g. New messages)</li>
+	  <li>Servers can advertise one or several ‘instance’, representing different accounts.</li>
+	  <li>Each instance can support a mix of different message type: SMS GSM, SMS CDMA, MMS or Email.
+	  <li>Increasingly popular.</li>
+	</ul>
+	<img src="images/2017070807.png" class="img-responsive"/>
+  </div>
+</section>
+<section>
+  <h3>Phone Book Profile(PBAP)</h3>
+  <div class="ppt">
+	<ul>
+	  <li>Phonebook Access Profile(PBAP)</li>
+	  <ul>
+		<li>Enable client device to browse or download the phonebook contents of a server (typically a phone).</li>
+		<li>Very popular due to it’s simplicity.</li>
+	  </ul>
+	  <li>Synchronization Profile</li>
+	  <ul>
+		<li>Uses the IrMC protocols to synchronize phonebook entries between two devices.</li>
+		<li>Enable devices to exchange only the contacts that were modified since the last sync.</li>
+		<li>Declining popularity, probably due to it’s relative complexity.</li>
+	  </ul>
+	</ul>
+	<img src="images/2017070808.png" class="img-responsive"/>
+  </div>
+</section>
+<section>
+  <h3>PBAP</h3>
+  <div class="ppt">
+	<ul>
+	  <li>Allows the exchange of phone book information between devices.</li>
+	  <li>Is commonly used by Bluetooth units to announce the name of the contact when a call is received.</li>
+	  <li>By accessing the phone’s memory, the Bluetooth headset can check if the phone number is stored in the cellphone and announce the name of the contact for that number, as is saved in the phone.</li>
+	  <li>Can be considered a “caller ID” profile.</li>
+	</ul>
+  </div>
+</section>
+<section>
+  <h3>Hands-Free and Headset Profiles</h3>
+  <div class="ppt">
+	<ul>
+	  <li>Hands-Free Profile(HFP)</li>
+	  <ul>
+		<li>Advance call control (Dialing, Conference calls, Voice recognition)</li>
+		<li>Bi-directional 64Kbit/s Voice</li>
+		<ul>
+		  <li>Narrow Band (8KHz Sample Rate)</li>
+		  <li>Wide Band Speech available (16KHz Sample rate) (Optional in HFP 1.6)</li>
+		</ul>
+		<li>Very popular profile.</li>
+	  </ul>
+	  <li>Headset Profile(HSP)</li>
+	  <ul>
+		<li>Very simple and basic call control (Button press, volume…)</li>
+		<li>Bi-directional 64Kbit/s Voice : Narrowband Only.</li>
+		<li>Due to it’s limited feature set, it has become much less popular than HFP.</li>
+	  </ul>
+	</ul>
+  </div>
+</section>
+<section>
+  <ul>
+	<li>HSP</li>
+	<ul>
+	  <li>The most commonly used Bluetooth profile </li>
+	  <li>Allows the headset to ring, answer a call, hung up, and adjust the call volume.</li>
+	</ul>
+	<li>HFP</li>
+	<ul>
+	  <li>Implemented with HSP on most devices.</li>
+	  <li>Allow to use more advanced phone features, like voice dialing, call waiting and redial.</li>
+	</ul>
+	<li>HSP & HFP are commonly referred to as “phone services” or “phone profiles”</li>
+  </ul>
+</section>

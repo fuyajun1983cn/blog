@@ -1,0 +1,76 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section data-markdown>
+  ## Channel Manager
+
+  * responsible for creating, managing and closing L2CAP channels.
+  * uses the L2CAP protocol to interact with a channel manager on a remote (peer) device to
+  * create these L2CAP channels
+  * connect their endpoints to the appropriate entities.
+  
+</section>
+<section data-markdown>
+  ## Channel Manager
+
+  * interacts with its local link manager or an AMP PAL to
+  * create new logical links (if necessary)
+  * configure these links to provide the required quality of service for the type of data being transported.
+  
+</section>
+<section data-markdown>
+  ## L2CAP Resource Manager
+
+  * managing the ordering of submission of PDU fragments to the baseband.
+  * Schedule Resources to access the physical channel.
+  * carry out traffic conformance policing to ensure negotiated QoS settings is met.
+
+</section>
+<section data-markdown>
+  ## Security Manager Protocol
+
+  * the P2P protocol used to generate encryption keys and identity keys.
+  * operates over a dedicated fixed L2CAP channel.
+  * manages storage of the encryption keys and identity keys.
+  * responsible for generating random addresses and resolving random addresses to known device identities.
+  * only used in LE systems.
+  
+</section>
+<section data-markdown>
+  ## Attribute Protocol
+
+  * implements the peer-to-peer protocol between an attribute server and an attribute client.
+  * communicate over a dedicated fixed L2CAP channel.
+  * The ATT client sends commands, requests, and confirmations to the ATT server.
+  * The ATT server sends responses, notifications and indications to the client.
+  
+</section>
+<section data-markdown>
+  ## Generic Attribute Profile
+
+  * represents the functionality of the attribute server and, optionally, the attribute client.
+  * describes the hierarchy of services, characteristics and attributes used in the attribute server.
+  * The block provides interfaces for discovering, reading, writing and indicating of service characteristics and attributes.
+  * used on LE devices for LE profile service discovery.
+  
+</section>
+<section data-markdown>
+  ## Generic Access Profile
+
+  * represents the base functionality common to all Bluetooth devices.
+  * GAP services include:
+  * device discovery
+  * connection modes
+  * security
+  * authentication
+  * association models
+  * service discovery
+  
+</section>
+
+

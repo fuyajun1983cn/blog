@@ -1,0 +1,96 @@
+---
+layout: ppt
+date: 2017-07-09
+author: 山庄来客
+update: 2017-07-09
+categories: bluetooth
+---
+
+<section data-markdown>
+  ## Overview
+
+  * operates in the unlicensed ISM band at 2.4 GHz
+  * employs a frequency hopping transceiver to combat interference and fading and provides many FHSS carriers.
+  * uses a shaped, binary frequency modulation to minimize transceiver complexity.
+  * Basic Rate: supporting 1 Mb/s bit rate.
+  * Enhanced Data Rate: supporting a gross air bit rate of 2 or 3Mb/s.
+  
+</section>
+<section data-markdown>
+  ## Overview
+
+  * physical radio channel is shared by a group of devices.
+  * those devices are synchronized by a common clock and frequency hopping pattern.
+  * the device provide the synchronization reference is called as master, others are called as slaves.
+  * a group of devices formed a piconet. 
+
+</section>
+<section data-markdown>
+  ## Frequency Hopping Pattern
+
+  * a specific frequency hopping pattern is algorithmically determined by certain fields in the Bluetooth address and the clock of the master.
+  * The basic hopping pattern is a pseudo-random ordering of the 79 frequencies, separated by 1 MHz, in the ISM band.
+  * The Hopping pattern can be adapted on per-salve device basis to exclude some frequencies.
+</section>
+<section data-markdown>
+  ## Physical Channel
+
+  * The physical channel is sub-divided into time units known as slots.
+  * Data in the packets are transmitted in those slots.
+  * Using TDD, bluetooth technology allow the effect of full duplex transmission.
+</section>
+<section data-markdown>
+  ## Hierachy of Channels and Links
+
+  * above the physical channel are the layering of links , channels and associated control protocols.
+  * From physical channel upward are:
+  * physical channel
+  * physical link
+  * logical transport
+  * logical link
+  * L2CAP channel
+  
+</section>
+<section data-markdown>
+  ## Physical link
+
+  * Typically, a physical link is formed between a master device and slave devices.
+  * Inquiry scan & Page scan don't need an associated physical link.
+  * Physical link is generally bi-directional transmition except in the case of a Connectionless Slave Broadcast physical link.
+  * There is a physical link between each slave and master.
+  * NO direct physical links are formed  between slaves.
+</section>
+<section data-markdown>
+  ## Physical Link
+
+  * used as a transport for one or more logical links.
+  * Logical links support unicast synchronous, asynchronous and isochronous traffic, and broadcast traffic.
+  * Traffic on logical links is multiplexed onto the physical link by ocuppying slots.
+</section>
+<section data-markdown>
+  ## Link Manager Protocol(LMP)
+
+  * carried over logical links.
+  * ACL logical transport are the default asynchronous connection-oriented logical transport used to transport LMP protocol signaling.
+  * whenever a device joins a piconet, a primary ACL logical transport is created.
+  * Connectionless Slave Broadcast devices are exceptional, they are purely listening to Connectionless Slave Broadcast packets. a Connectionless Slave Broadcast logical transport is created.
+  * For all devices, additional logical transports may be created to transport synchronous data streams when required.
+
+  
+</section>
+<section data-markdown>
+  ## Link Manager
+
+  * The Link Manager function uses LMP to control the operation of devices in the piconet.
+  * provide services to manage the lower architectural layers(radio layer and baseband layer).
+  
+</section>
+<section data-markdown>
+  ## L2CAP
+
+  * provides a channel-based abstraction to applications and services.
+  * applicaiton segmentation and reassembly of application data.
+  * multiplexing and de-multiplexing of multiple channels over a shared logical link.
+  * has a protocol control channel carried over the default ACL logical transport.
+  * any logical link supporting L2CAP protocol can carry L2CAP encapsulated data. 
+</section>
