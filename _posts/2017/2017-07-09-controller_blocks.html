@@ -6,58 +6,87 @@ update: 2017-07-09
 categories: bluetooth
 ---
 
-<section data-markdown>
-  ## Device Manager
-
-  * the functional block in the baseband that controls the general behavior of the Bluetooth device.
-  * responsible for all operations not directly related to data transport such as:
-  * Inquiry
-  * Connect
-  * make local device discoverable or connetable.
+<section>
+  <h3>Device Manager</h3>
+  <div class="ppt">
+    <ul>
+      <li>the functional block in the baseband that controls the general behavior of the Bluetooth device.</li>
+      <li>responsible for all operations not directly related to data transport such as:</li>
+      <ul>
+        <li>Inquiry</li>
+        <li>Connect</li>
+        <li>make local device <span class="ppt-keyword">discoverable</span> or <span class="ppt-keyword">connetable</span>.</li>
+      </ul>
+    </ul>
+  </div>
   
 </section>
-<section data-markdown>
-  ## Device Manager
-
-  * need access to the transport medium to carry out its functions.
-  * controls local device behavior by a number of the HCI commands such as:
-  * manage local name
-  * store link keys.
-  * other functionality.
-  
+<section>
+  <h3>Device Manager</h3>
+  <div class="ppt">
+    <ul>
+      <li>need access to the transport medium to carry out its functions.</li>
+      <li>controls local device behavior by a number of the HCI commands such as:</li>
+      <ul>
+        <li>manage local name</li>
+        <li>store link keys.</li>
+        <li>other functionality.</li>
+      </ul>
+    </ul>
+  </div>
 </section>
-<section data-markdown>
-  ## Link Manager
-
-  * responsible for managing logical links(or related logical transports):
-  * creation
-  * modification
-  * release
-  * update of parameters related to physical links between devices.
-  * using LMP in BR/EDR and LL in LE to achieve the above functions.
-  
+<section>
+  <h3>Link Manager</h3>
+  <div class="ppt">
+    <ul>
+      <li>responsible for managing logical links(or related logical transports):</li>
+      <ul>
+        <li>creation</li>
+        <li>modification</li>
+        <li>release</li>
+        <li>update of parameters related to physical links between devices.</li>
+      </ul>
+      <li>using LMP in BR/EDR and LL in LE to achieve the above functions.</li>
+    </ul>
+  </div>
 </section>
-<section data-markdown>
-  ## Link Manager
-
-  * LM or LL protocol allows:
-  * creation of new logical links and logical transports when required.
-  * the general control of link and transport attributes such as:
-  * enabling of encryption on the logical transport
-  * adapting of TX power in BR/EDR on the physical link.
-  *adjusting of QoS Settings in  BR/EDR for a logical link.
-  
+<section>
+  <h3>Link Manager</h3>
+  <div class="ppt">
+    <ul>
+      <li>LM or LL protocol allows:</li>
+      <ul>
+        <li>creation of new logical links and logical transports when required.</li>
+        <li>the general control of link and transport attributes such as:</li>
+        <ul>
+          <li>enabling of encryption on the logical transport</li>
+          <li>adapting of TX power in BR/EDR on the physical link.</li>
+          <li>adjusting of QoS Settings in  BR/EDR for a logical link.</li>
+        </ul>
+      </ul>
+    </ul>
+  </div>
 </section>
-<section data-markdown>
-  ## Baseband Resource Manager
-
-  * responsible for all access to the radio medium.
-  * has two main functions:
-  * a scheduler that grants time on the physical channels.
-  * negotiate access contracts with other entities.
-  * An access contract is effectively a commitment to deliver a certain QoS reuirement.
-  * realignment time between slots on the original physical channel and slots on the new physical channel.
-  
+<section>
+  <h3>Baseband Resource Manager</h3>
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>responsible for all access to the radio medium.</li>
+        <li>has two main functions:</li>
+        <ul>
+          <li>a scheduler that grants time on the physical channels.</li>
+          <li>negotiate access contracts with other entities.</li>
+        </ul>
+      </ul>
+    </div>
+    <div class="ppt-right">
+      <ul>
+        <li> An access contract is effectively a commitment to deliver a certain QoS reuirement.</li>
+        <li> realignment time between slots on the original physical channel and slots on the new physical channel.</li>
+      </ul>
+    </div>
+  </div>
 </section>
 <section data-markdown>
   ## Link Controller
