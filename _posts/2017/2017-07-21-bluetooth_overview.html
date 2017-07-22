@@ -1,0 +1,678 @@
+---
+layout: ppt
+date: 2017-07-21
+author: 山庄来客
+update: 2017-07-21
+categories: bluetooth
+---
+
+<section>
+  <h3>Bluetooth Overview</h3>
+  <ul>
+    <li>Bluetooth Basics</li>
+    <li>Benefits of Bluetooth Technology</li>
+    <li>How Bluetooth Technology Works</li>
+    <li>Core System Architecture</li>
+    <li>Profile Overview</li>
+  </ul>
+</section>
+<section>
+  <h3>Bluetooth Basics</h3>
+  <p>
+    Bluetooth wireless technology is a short-range communications technology intended to replace the cables connecting portable and/or fixed devices while maintaining high levels of security.
+  </p>
+</section>
+<section>
+  <ul>
+    <li>The key features of Bluetooth technology are</li>
+    <ul>
+      <li>Robustness</li>
+      <li>Low Power</li>
+      <li>Low Cost</li>
+    </ul>
+    <li>The Bluetooth specification defines a uniform structure for a wide range of devices to connect and communicate with each other.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Any Bluetooth-enabled device can connect to other Bluetooth-enabled devices in proximity.</li>
+    <li>Bluetooth devices connect and communicate wirelessly through piconets.</li>
+    <li>Each device can simultaneously communicate with up to seven other devices within a single piconet. Each device can also belong to several piconets simultaneously.</li>
+    <li>Piconets are established dynamically and automatically as Bluetooth-enabled devices enter and leave radio proximity.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>A fundamental Bluetooth wireless technology strength is the ability to simultaneously handle both data and voice transmissions.</li>
+    <li>This enables users to enjoy variety of innovative solutions such as:</li>
+    <ul>
+      <li>A hands-free headset for voice calls</li>
+      <li>Printing and fax capabilities</li>
+      <li>Synchronizing PDA, laptop, and mobile phone applications</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Specification Make-up</h3>
+  <p>
+    Unlike many other wireless standards, the Bluetooth wireless specification gives product developers both link layer and application layer definitions, which supports data and voice applications.
+  </p>
+</section>
+<section>
+  <h3>Spectrum</h3>
+  <ul>
+    <li>Bluetooth technology operates in the unlicensed industrial, scientific, and medical (ISM) band at 2.4 to 2.485 GHz, using a spread spectrum, frequency hopping, full-duplex signal at a nominal rate of 1600 hops/sec.</li>
+    <li>The 2.4 GHz ISM band is available and unlicensed in most countries.</li>
+  </ul>
+</section>
+<section>
+  <h3>Interference</h3>
+  <ul>
+    <li>Adaptive frequency hopping (AFH) capability was designed to reduce interference between wireless technologies sharing the 2.4 GHz spectrum.</li>
+    <li>AFH works within the spectrum to take advantage of the available frequency.</li>
+    <li>This adaptive hopping allows for more efficient transmission within the spectrum.</li>
+    <li>The signal hops among 79 frequencies at 1 MHz intervals.</li>
+  </ul>
+</section>
+<section>
+  <h3>Range</h3>
+  <ul>
+    <li>The operating range depends on the device class:</li>
+    <ul>
+      <li>Class 3 radios (0 dBm)– have a range of up to 1 meter or 3 feet</li>
+      <li>Class 2 radios (4 dBm)– most commonly found in mobile devices – have a range of 10 meters or 30 feet</li>
+      <li>Class 1 radios (20 dBm)– used primarily in industrial use cases – have a range of 100 meters or 300 feet</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Power</h3>
+  <ul>
+    <li>The most commonly used radio is Class 2 and uses 2.5 mW of power.</li>
+    <li>Bluetooth technology is designed to have very low power consumption.</li>
+  </ul>
+</section>
+<section>
+  <h3>Data Rate</h3>
+  <ul>
+    <li>1 Mbps for Version 1.2</li>
+    <li>Up to 3 Mbps supported for Version 2.0/2.1 + EDR</li>
+  </ul>
+</section>
+<section>
+  <h3>How Bluetooth Technology Works</h3>
+  <ul>
+    <li>Overview of Operation</li>
+    <li>Core System Architecture</li>
+    <li>Communication Topology</li>
+    <li>Profiles Overview</li>
+  </ul>
+</section>
+<section>
+  <h3>Overview of Operation</h3>
+  <ul>
+    <li>The Bluetooth RF (physical layer) operates in the unlicensed ISM band at 2.4 GHz.</li>
+    <li>The system employs a frequency hop transceiver.</li>
+    <li>RF operation uses a shaped, binary frequency modulation.</li>
+    <li>The symbol rate is 1 Megasymbol per second (Msps) supporting the bit rate of 1 Megabit per second (Mbps) or, with Enhanced Data Rate, a gross air bit rate of 2 or 3Mb/s.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>A physical radio channel is shared by a group of devices that are synchronized to a common clock and frequency hopping pattern.</li>
+    <li>One device provides the synchronization reference and is known as the master. All other devices are known as slaves.</li>
+    <li>A group of devices synchronized in this fashion form a piconet.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Devices in a piconet use a specific frequency hopping pattern.</li>
+    <li>The basic hopping pattern is a pseudo-random ordering of the 79 frequencies in the ISM band.</li>
+    <li>The hopping pattern may be adapted to exclude a portion of the frequencies that are used by interfering devices.</li>
+    <li>The adaptive hopping technique improves Bluetooth technology co-existence with static (non-hopping) ISM systems when these are co-located.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>The physical channel is subdivided into time units known as <span class="ppt-keyword">slots</span>.</li>
+    <li>Data is transmitted in packets that are positioned in these slots.</li>
+    <li>A number of consecutive slots may be allocated to a single packet.</li>
+    <li>Frequency hopping takes place between the transmission or reception of packets.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Above the physical channel there is a layering of links and channels and associated control protocols.</li>
+    <li>The hierarchy of channels and links from the physical channel upwards is</li>
+    <ul>
+      <li>Physical channel</li>
+      <li>Physical link</li>
+      <li>Logical transport</li>
+      <li>Logical link</li>
+      <li>L2CAP channel</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Within a physical channel, a physical link is formed between any two devices that transmit packets in either direction between them.</li>
+    <li>In a piconet physical channel, there are restrictions on which devices may form a physical link.</li>
+    <li>There is a physical link between each slave and the master.</li>
+    <li>Physical links are not formed directly between the slaves in a piconet.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>The physical link is used as a transport for one or more logical links.</li>
+    <li>Traffic on logical links is multiplexed onto the physical link by occupying slots assigned by a scheduling function in the resource manager.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>A control protocol for the baseband and physical layers is carried over logical links in addition to user data. This is the <span class="ppt-keyword">link manager protocol (LMP)</span>.</li>
+    <li>Devices that are active in a piconet have a default asynchronous connection-oriented logical transport that is used to transport the LMP protocol signaling. For historical reasons, this is known as the <span class="ppt-keyword">ACL logical transport</span>.</li>
+    <li>The default ACL logical transport is the one that is created whenever a device joins a piconet.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>The link manager function uses LMP to control the operation of devices in the piconet.</li>
+    <li>The LMP protocol is only carried on the default ACL logical transport and the default broadcast logical transport.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Above the baseband layer, the L2CAP layer provides a channel-based abstraction to applications and services.</li>
+    <li>It carries out segmentation and reassembly of application data and multiplexing and de-multiplexing of multiple channels over a shared logical link.</li>
+    <li>L2CAP has a protocol control channel that is carried over the default ACL logical transport.</li>
+    <li>Application data submitted to the L2CAP protocol may be carried on any logical link that supports the L2CAP protocol.</li>
+  </ul>
+</section>
+<section>
+  <h3>Communication Topology</h3>
+  <ul>
+    <li>Piconet</li>
+    <li>Operational Procedures and Modes</li>
+  </ul>
+</section>
+<section>
+  <h3>Piconet</h3>
+  <ul>
+    <li>A piconet onsists of two or more devices that occupy the same physical channel.</li>
+    <li>The common (piconet) clock is identical to the Bluetooth clock of one of the devices in the piconet, known as the <span class="ppt-keyword">master</span>.</li>
+    <li>The hopping sequence is derived from the master’s clock and the master’s Bluetooth device address.</li>
+    <li>All other devices are referred to as <span class="ppt-keyword">slaves</span>.</li>
+    <li>A device that is a member of two or more piconets is said to be involved in a <span class="ppt-keyword">scatternet</span>.</li>
+  </ul>
+</section>
+<section>
+  <h3>Operational Procedures and Modes</h3>
+  <ul>
+    <li>Inquiry (Discovering)</li>
+    <li>Paging (Connecting)</li>
+  </ul>
+</section>
+<section>
+  <h3>Inquiry (Discovering) Procedure</h3>
+  <ul>
+    <li>A Bluetooth-enabled device that tries to find other nearby devices actively sends inquiry requests.</li>
+    <li>Bluetooth-enabled devices that are available to be found send responses.</li>
+  </ul>
+</section>
+<section>
+  <h3>Paging (Connecting) Procedure</h3>
+  <ul>
+    <li>One device carries out the page (connection) procedure while the other is connectable (page scanning).</li>
+    <li>The page procedure is only responded to by one specified Bluetooth-enabled device.</li>
+  </ul>
+</section>
+<section>
+  <h3>RF and Baseband</h3>
+  <ul>
+    <li>RF channel</li>
+    <ul>
+      <li>Frequency hopping, bandwidth occupancy, slot timing, TDD, and TDM</li>
+      <li>RF performance measures</li>
+      <li>Modulation and coding</li>
+    </ul>
+    <li>Network topology</li>
+    <ul>
+      <li>Piconet, scatternet, master, slave</li>
+      <li>Slot structure</li>
+    </ul>
+    <li>Packet format</li>
+    <ul>
+      <li>Access code, header, payload</li>
+      <li>Packet types</li>
+    </ul>
+    <li>Connection establishment</li>
+    <ul>
+      <li>Device discovery, device connection</li>
+    </ul>
+    <li>Low power modes</li>
+    <ul>
+      <li>Sniff</li>
+      <li>sub-Sniff</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>RF Channel</h3>
+  <ul>
+    <li>2.4 GHz frequency band</li>
+    <ul>
+      <li>Unlicensed (subject to certain constraints on output power and spreading)</li>
+      <li>World-wide availability</li>
+      <li>Shared with 802.11b/g, cordless telephony, microwave ovens</li>
+      <li>Other bands (WAN, 802.11a, WiMax, UWB)</li>
+    </ul>
+    <li>Frequency hopping (spread spectrum)</li>
+    <ul>
+      <li>1 MHz channels, hopping randomly over 79 frequencies (2402 to 2480 MHz)</li>
+      <li>Hopping rate nominally 1600 Hz (hops every 625 us = 1 slot)</li>
+      <li>Imposes requirements on synthesizer design and packet format to be able to quickly retune and settle synthesizer (~100 us)</li>
+      <li>Requires network synchronization</li>
+      <ul>
+        <li>Both transmitter and receiver need to be hopping on the same sequence</li>
+        <li>Both transmitter and receiver need to be time-synchronized so that they are hopping at the same time</li>
+      </ul>
+    </ul>
+    <li>Time Division Duplexing (TDD)</li>
+    <ul>
+      <li>Half duplex, i.e., for any given slot, either transmitter or receiving (not both)</li>
+      <li>Take turns transmitting and receiving</li>
+      <li>Implies a simpler radio architecture (single synthesizer can be shared)</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>RF Performance Measures</h3>
+  <ul>
+    <li>Receiver sensitivity</li>
+    <ul>
+      <li>Defined by Bluetooth SIG as the minimum received signal power to achieve a bit error rate better than 10-3 (basic rate) or 10-4 (EDR)</li>
+      <li>Dirty transmitter defined in Bluetooth SIG test specification</li>
+      <li>Advertised sensitivity can be ambiguous</li>
+      <ul>
+        <li>DQPSK sensitivity can be 2 dB better than GFSK sensitivity</li>
+        <li>Typical sensitivity (GFSK) is around -88 dBm</li>
+        <li>-70 dBm sensitivity is required by BT spec</li>
+      </ul>
+      <li>Packet Error Rate (PER/LPR)</li>
+      <ul>
+        <li>Not included as part of Bluetooth SIG test spec, but may included in Vendor’s internal requirements</li>
+        <li>LPR = missed access code, header error, other (only dependent on GFSK AC+HDR)</li>
+        <li>PER = includes LPR + payload CRC error</li>
+      </ul>
+    </ul>
+    <li>Transmitter Output Power</li>
+    <ul>
+      <li>Bluetooth spec defines several transmit classes</li>
+      <ul>
+        <li>Class 3: Output power ≤ 0 dBm</li>
+        <li>Class 2: -6 ≤ Output power ≤ +4 dBm</li>
+        <li>Class 1: 0 ≤ Output power ≤ +20 dBm (requires power control)</li>
+      </ul>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Modulation</h3>
+  <ul>
+    <li>GFSK = Gaussian Frequency Shift Keying</li>
+    <ul>
+      <li>Symbol rate is 1 Msymbol/second</li>
+      <li>Each symbol contains one bit of information (either 1 or 0)</li>
+      <li>Information is conveyed in the instantaneous frequency of the signal</li>
+      <ul>
+        <li>‘1’ = +160 kHz</li>
+        <li>‘0’ = -160 kHz</li>
+      </ul>
+    </ul>
+    <li>/4-DQPSK = /4-Rotated Differential QuadraturePhase Shift Keying</li>
+    <ul>
+      <li>Symbol rate is 1 Msymbol/second</li>
+      <li>Each symbol contains two bits of information (either 00, 01, 10, or 11)</li>
+      <li>Information is conveyed in phase differences between successive symbols (4 possibilities)</li>
+    </ul>
+    <li>D8PSK = Differential 8-Phase Shift Keying</li>
+    <ul>
+      <li>Symbol rate is 1 Msymbol/second</li>
+      <li>Each symbol contains three bits of information (either 000, 001, 010, etc)</li>
+      <li>Information is conveyed in phase differences between successive symbols (8 possibilities)</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Coding</h3>
+  <ul>
+    <li>Coding increases robustness of the transmission</li>
+    <ul>
+      <li>Decreases SNR requirement to achieve a desired bit error rate</li>
+      <li>Increases range</li>
+      <li>Does not require retransmission</li>
+      <ul>
+        <li>All the work is done in the receiver</li>
+        <li>Error correction is performed before CRC check</li>
+      </ul>
+      <li>Coding works by adding controlled redundancy to the information stream</li>
+      <ul>
+        <li>Code rate = information bits / transmitted bits</li>
+      </ul>
+      <li>Bluetooth uses R=1/3 repetition code and R=2/3 Hamming code</li>
+    </ul>
+</section>
+<section>
+  <h3>Network Topology</h3>
+  <ul>
+    <li>Piconet</li>
+    <ul>
+      <li>It consists of a single master and one or more slaves (up to seven slaves)</li>
+      <li>Point-to-point, or point-to-multipoint</li>
+      <li>Master controls the physical channel which is shared by all devices</li>
+      <ul>
+        <li>Hopping sequence is based on the master’s LAP and clock</li>
+        <li>Burst timing is based on the master’s clock</li>
+        <li>The physical channel ideally isolates nearby piconets from one another</li>
+      </ul>
+      <li>Any particular device can take on either the master or slave role</li>
+    </ul>
+    <li>Scatternet</li>
+    <ul>
+      <li>A device can participate in two or more piconets (time division multiplexed)</li>
+      <li>Each piconet has its own hopping sequence.</li>
+      <li>There can only be a single master in each piconet</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Core Architectural Blocks</h3>
+  <ul>
+    <li>Channel Manager</li>
+    <li>L2CAP Resource Manager</li>
+    <li>Device Manager</li>
+    <li>Link Manager</li>
+    <li>Baseband Resource Manager</li>
+    <li>Link Controller</li>
+    <li>RF</li>
+  </ul>
+</section>
+<section>
+  <h3>Channel Manager</h3>
+  <ul>
+    <li>Responsible for creating, managing, and destroying L2CAP channels for the transport of service protocols and application data streams.</li>
+    <li>Uses the L2CAP protocol to interact with a channel manager on a remote (peer) device to create these L2CAP channels and connect their endpoints to the appropriate entities.</li>
+    <li>The channel manager interacts with its local link manager to create new logical links.</li>
+  </ul>
+</section>
+<section>
+  <h3>L2CAP Resource Manager</h3>
+  <ul>
+    <li>Responsible for managing the ordering of submission of PDU fragments to the baseband</li>
+    <li>Required because</li>
+    <ul>
+      <li>The architectural model does not assume that the Bluetooth controller has limitless buffering</li>
+      <li>The HCI is a pipe of infinite bandwidth</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Device Manager</h3>
+  <ul>
+    <li>Functional block in the baseband that controls the general behavior of the Bluetooth enabled device</li>
+    <li>Responsible for all operation of the Bluetooth system that is not directly related to data transport</li>
+  </ul>
+</section>
+<section>
+  <h3>Link Manager</h3>
+  <ul>
+    <li>Responsible for the creation, modification, and release of logical links</li>
+    <li>Achieves this by communicating with the link manager in remote Bluetooth devices using the link management protocol (LMP)</li>
+    <li>The LMP allows the creation of new logical links and logical transports between devices when required</li>
+  </ul>
+</section>
+<section>
+  <h3>Baseband Resource Manager</h3>
+  <ul>
+    <li>Responsible for all access to the radio medium</li>
+    <li>It has two main functions:</li>
+    <ul>
+      <li>A scheduler that grants time on the physical channels to all of the entities that have negotiated an access contract</li>
+      <li>Negotiate access contracts with these entities. An access contract is effectively a commitment to deliver a certain QoS that is required in order to provide a user application with an expected performance</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Link Controller</h3>
+  <ul>
+    <li>Responsible for the encoding and decoding of Bluetooth packets from the data payload and parameters related to the physical channel, logical transport, and logical link</li>
+    <li>Carries out the link control protocol signaling which is used to communicate flow control and acknowledgement and retransmission request signals</li>
+  </ul>
+</section>
+<section>
+  <h3>RF</h3>
+  <ul>
+    <li>Responsible for transmitting and receiving packets of information on the physical channel.</li>
+    <li>Transforms a stream of data to and from the physical channel and the baseband into required formats</li>
+  </ul>
+</section>
+<section>
+  <h3>Profiles Overview</h3>
+  <ul>
+    <li>To use Bluetooth wireless technology, a device must be able to interpret certain Bluetooth profiles.</li>
+    <li>The profiles define the possible applications.</li>
+    <li>Bluetooth profiles are general behaviors through which Bluetooth-enabled devices communicate with other devices.</li>
+    <li>Bluetooth technology defines a wide range of profiles that describe many different types of use cases.</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>At a minimum, each profile specification contains information on the following topics:</li>
+    <ul>
+      <li>Dependencies on other profiles</li>
+      <li>Suggested user interface formats</li>
+      <li>Specific parts of the Bluetooth protocol stack used by the profile</li>
+      <li><a href="http://blog.ifjy.me/bluetooth/2017/07/09/profiles.html#/">Several Commom Profiles</a></li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>BT 4.0 Overview</h3>
+  <ul>
+    <li>What is BT low-energy technology?</li>
+    <li>BR/EDR vs. LE</li>
+    <li>How to achieve ultra-low power</li>
+    <li>BT low-energy architecture</li>
+    <ul>
+      <li>Physical layer descriptions</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>What is BT Low-Energy Technology?</h3>
+  <ul>
+    <li>BT low-energy technology is a global standard, very low-power wireless
+      technology.</li>
+    <li>BT low-energy technology enables devices with coin cell batteries to be wirelessly
+      connected to standard BT enabled devices.</li>
+    <li>A BT low-energy stack can work standalone (LE single-mode) or work with a
+      BR/EDR stack (dual-mode).</li>
+  </ul>
+</section>
+<section>
+  <h3>BR/EDR vs. LE</h3>
+  <table class="table table-bordered">
+    <tr>
+      <th>Technical specifications</th>
+      <th>BR/EDR</th>
+      <th>LE</th>
+    </tr>
+    <tr>
+      <td>Radio frequency</td>
+      <td>2.4 GHz</td>
+      <td>2.4 GHz</td>
+    </tr>
+    <tr>
+      <td>Distance/range</td>
+      <td>10 meters (class 2)</td>
+      <td>10 meters (class 2)</td>
+    </tr>
+    <tr>
+      <td>Over-the-air data rate</td>
+      <td>1–3 Mbps</td>
+      <td>1Mbps</td>
+    </tr>
+    <tr>
+      <td>Application throughput</td>
+      <td>0.7–2.1 Mbps</td>
+      <td>0.2 Mbps</td>
+    </tr>
+    <tr>
+      <td>Active slaves in piconet</td>
+      <td>7</td>
+      <td>> 4 billion, in theory</td>
+    </tr>
+    <tr>
+      <td>Security</td>
+      <td>64-bit/128-bit and application layer user defined</td>
+      <td>128-bit and application layer user defined</td>
+    </tr>
+    <tr>
+      <td>Robustness</td>
+      <td>Adaptive fast frequency hopping, FEC, fast ACK</td>
+      <td>Adaptive fast frequency hopping</td>
+    </tr>
+    <tr>
+      <td>Latency (from a nonconnected state)</td>
+      <td>100 ms</td>
+      <td> &lt6ms</td>
+    </tr>
+    <tr>
+      <td>Government regulation</td>
+      <td>Worldwide</td>
+      <td>The same as BR/EDR</td>
+    </tr>
+    <tr>
+      <td>Certification body</td>
+      <td>BT SiG</td>
+      <td>The same as BR/EDR</td>
+    </tr>
+    <tr>
+      <td>Voice capable</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Network topology</td>
+      <td>scatternet</td>
+      <td>Star(single)</td>
+    </tr>
+    <tr>
+      <td>Power consumption</td>
+      <td>1 as the reference</td>
+      <td>0.01 to 0.5 (depending on the use case)</td>
+    </tr>
+    <tr>
+      <td>Service discovery</td>
+      <td>Yes</td>
+      <td>The same as BR/EDR</td>
+    </tr>
+    <tr>
+      <td>Profile concept</td>
+      <td>Yes</td>
+      <td>The same as BR/EDR</td>
+    </tr>
+    <tr>
+      <td>Primary use cases</td>
+      <td>Mobile phones, gaming, headsets, stereo audio
+        streaming, automotive, PCs, etc.</td>
+      <td>Mobile phones, gaming, automotive, PCs, watches, sports
+and fitness, healthcare, home electronics, automation,
+        industrial, etc.</td>
+    </tr>
+  </table>
+</section>
+<section>
+  <h3>How to Achieve Ultimate Low Power</h3>
+  <ul>
+    <li>Lower standby time (i.e., lower duty cycle)</li>
+    <ul>
+      <li>Only three channels are used for advertising (vs. 16 to 32 channels for BR/EDR).</li>
+      <li>RF is on for 0.6 to 1.2 ms (vs. 22.5 ms for BR/EDR).</li>
+    </ul>
+    <li>Faster connection (i.e., able to send data quicker)</li>
+    <ul>
+      <li>The devices can connect in 3 ms (vs. > 100 ms for BR/EDR).</li>
+    </ul>
+    <li>Lower peak power</li>
+    <ul>
+      <li>BT low-energy technology uses relaxed RF parameters.</li>
+      <ul>
+        <li>GFSK modulation index is increased to 0.45–0.55 (vs. 0.28–0.35 for BR)</li>
+        <li>Allows better range/robustness</li>
+      </ul>
+      <li>Packet length restricted</li>
+      <ul>
+        <li>Together with GFSK, gives lowest complexity transmitter/receiver</li>
+        <li>Provides lower peak power</li>
+      </ul>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>BT Low Energy Architecture</h3>
+  <div class="ppt-left">
+    <ul>
+      <li>Physical layer: transmits/receives bits</li>
+      <li>Link layer: packets and control</li>
+      <li>HCI: interface between host/controller</li>
+      <li>L2CAP: multiplexer</li>
+      <li>Attribute protocol: protocol for accessing data</li>
+      <li>Attribute profile: how are things organized</li>
+      <li>Device profiles: applications</li>
+    </ul>
+  </div>
+  <div class="ppt-right">
+    <img src="/images/2017/2017072201.png" class="img-responsive">
+  </div>
+</section>
+<section>
+  <h3>Physical Layer – Channels</h3>
+  <ul>
+    <li>2.4 GHz ISM band transceiver</li>
+    <ul>
+      <li>Divided into 40 RF channels</li>
+      <li>2 MHz channel spacing</li>
+    </ul>
+    <li>Advertising channels</li>
+    <ul>
+      <li>Used to broadcast data</li>
+      <li>Connectable</li>
+      <li>Discoverable</li>
+      <li>Three fixed channels (Ch37 = 2402 MHz, Ch38 = 2426 MHz,
+        and Ch39 = 2480 MHz)</li>
+    </ul>
+    <li>Data channels</li>
+    <ul>
+      <li>Used to send application data</li>
+      <li>Adaptively frequency hopped</li>
+      <li>37 dynamic channels</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <h3>Physical Layer – Modulation</h3>
+  <ul>
+    <li>GFSK modulation</li>
+    <ul>
+      <li>Gaussian frequency shift keying</li>
+      <li>Bit time product BT = 0.5</li>
+      <li>Modulation index = 0.5</li>
+    </ul>
+    <li>Can be combined with BR/EDR RF in a dual-mode device</li>
+    <ul>
+      <li>BT low energy additional cost on dual-mode is almost $0</li>
+    </ul>
+  </ul>
+</section>
+
