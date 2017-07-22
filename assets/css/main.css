@@ -362,3 +362,9 @@ div.ppt-right {
 	-moz-box-flex: 1;
 	-webkit-box-flex: 1;
 }
+
+span.ppt-keyword {
+    font-weight: bold;
+    font-size: 32pt;
+    color: yellow;
+}

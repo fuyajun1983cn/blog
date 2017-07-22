@@ -6,31 +6,50 @@ update: 2017-07-09
 categories: bluetooth
 ---
 
-<section data-markdown>
-  ## Overview
-
-  * operates in the unlicensed ISM band at 2.4 GHz
-  * employs a frequency hopping transceiver to combat interference and fading and provides many FHSS carriers.
-  * uses a shaped, binary frequency modulation to minimize transceiver complexity.
-  * Basic Rate: supporting 1 Mb/s bit rate.
-  * Enhanced Data Rate: supporting a gross air bit rate of 2 or 3Mb/s.
-  
+<section>
+  <h3>Overview</h3>
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>operates in the unlicensed ISM band at 2.4 GHz</li>
+        <li>employs a frequency hopping transceiver to combat interference and fading and provides many FHSS carriers.</li>
+        <li>uses a shaped, binary frequency modulation to minimize transceiver complexity.</li>
+      </ul>
+    </div>
+    <div class="ppt-right">
+      <ul>
+        <li>Basic Rate: supporting 1 Mb/s bit rate.</li>
+        <li>Enhanced Data Rate: supporting a gross air bit rate of 2 or 3Mb/s.</li>
+      </ul>
+    </div>
+  </div>
 </section>
-<section data-markdown>
-  ## Overview
-
-  * physical radio channel is shared by a group of devices.
-  * those devices are synchronized by a common clock and frequency hopping pattern.
-  * the device provide the synchronization reference is called as master, others are called as slaves.
-  * a group of devices formed a piconet. 
-
+<section>
+  <h3>Overview</h3>
+  <div class="ppt">
+    <ul>
+      <li>physical radio channel is shared by a group of devices.</li>
+      <li>those devices are synchronized by a common clock and frequency hopping pattern.</li>
+      <li>the device provide the synchronization reference is called as <span class="ppt-keyword">master</span>, others are called as <span class="ppt-keyword">slaves</span>.</li>
+      <li>a group of devices formed a piconet. </li>
+    </ul>
+  </div>
 </section>
-<section data-markdown>
-  ## Frequency Hopping Pattern
-
-  * a specific frequency hopping pattern is algorithmically determined by certain fields in the Bluetooth address and the clock of the master.
-  * The basic hopping pattern is a pseudo-random ordering of the 79 frequencies, separated by 1 MHz, in the ISM band.
-  * The Hopping pattern can be adapted on per-salve device basis to exclude some frequencies.
+<section>
+  <h3>Frequency Hopping Pattern</h3>
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>a specific frequency hopping pattern is algorithmically determined by certain fields in the Bluetooth address and the clock of the master.</li>
+        <li>The basic hopping pattern is a pseudo-random ordering of the 79 frequencies, separated by 1 MHz, in the ISM band.</li>
+      </ul>
+    </div>
+    <div class="ppt-right">
+      <ul>
+        <li>The Hopping pattern can be adapted on per-salve device basis to exclude some frequencies.</li>
+      </ul>
+    </div>
+  </div>
 </section>
 <section data-markdown>
   ## Physical Channel
@@ -39,26 +58,40 @@ categories: bluetooth
   * Data in the packets are transmitted in those slots.
   * Using TDD, bluetooth technology allow the effect of full duplex transmission.
 </section>
-<section data-markdown>
-  ## Hierachy of Channels and Links
-
-  * above the physical channel are the layering of links , channels and associated control protocols.
-  * From physical channel upward are:
-  * physical channel
-  * physical link
-  * logical transport
-  * logical link
-  * L2CAP channel
-  
+<section>
+  <h3>Hierachy of Channels and Links</h3>
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>above the physical channel are the layering of links , channels and associated control protocols.</li>
+        <li>From physical channel upward are:</li>
+        <ul>
+          <li> physical channel</li>
+          <li> physical link</li>
+          <li> logical transport</li>
+          <li> logical link</li>
+          <li> L2CAP channel</li>
+        </ul>
+      </ul>
+    </div>
+  </div>
 </section>
-<section data-markdown>
-  ## Physical link
-
-  * Typically, a physical link is formed between a master device and slave devices.
-  * Inquiry scan & Page scan don't need an associated physical link.
-  * Physical link is generally bi-directional transmition except in the case of a Connectionless Slave Broadcast physical link.
-  * There is a physical link between each slave and master.
-  * NO direct physical links are formed  between slaves.
+<section>
+  <h3>Physical link</h3>
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>Typically, a physical link is formed between a master device and slave devices.</li>
+        <li>Inquiry scan & Page scan don't need an associated physical link.</li>
+        <li>Physical link is generally bi-directional transmition except in the case of a Connectionless Slave Broadcast physical link.</li>
+      </ul>
+    </div>
+    <div class="ppt-right">
+      <ul>
+        <li>There is a physical link between each slave and master.</li>
+        <li>NO direct physical links are formed  between slaves.</li>
+      </ul>
+    </div>
 </section>
 <section data-markdown>
   ## Physical Link
@@ -67,16 +100,23 @@ categories: bluetooth
   * Logical links support unicast synchronous, asynchronous and isochronous traffic, and broadcast traffic.
   * Traffic on logical links is multiplexed onto the physical link by ocuppying slots.
 </section>
-<section data-markdown>
-  ## Link Manager Protocol(LMP)
-
-  * carried over logical links.
-  * ACL logical transport are the default asynchronous connection-oriented logical transport used to transport LMP protocol signaling.
-  * whenever a device joins a piconet, a primary ACL logical transport is created.
-  * Connectionless Slave Broadcast devices are exceptional, they are purely listening to Connectionless Slave Broadcast packets. a Connectionless Slave Broadcast logical transport is created.
-  * For all devices, additional logical transports may be created to transport synchronous data streams when required.
-
-  
+<section>
+  <h3>Link Manager Protocol(LMP)</h3>
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>carried over logical links.</li>
+        <li>ACL logical transport are the default asynchronous connection-oriented logical transport used to transport LMP protocol signaling.</li>
+        <li>whenever a device joins a piconet, a primary ACL logical transport is created.</li>
+      </ul>
+    </div>
+    <div class="ppt-right">
+      <ul>
+        <li>Connectionless Slave Broadcast devices are exceptional, they are purely listening to Connectionless Slave Broadcast packets. a Connectionless Slave Broadcast logical transport is created.</li>
+        <li>For all devices, additional logical transports may be created to transport synchronous data streams when required.</li>
+      </ul>
+    </div>
+  </div>
 </section>
 <section data-markdown>
   ## Link Manager
@@ -85,12 +125,15 @@ categories: bluetooth
   * provide services to manage the lower architectural layers(radio layer and baseband layer).
   
 </section>
-<section data-markdown>
-  ## L2CAP
-
-  * provides a channel-based abstraction to applications and services.
-  * applicaiton segmentation and reassembly of application data.
-  * multiplexing and de-multiplexing of multiple channels over a shared logical link.
-  * has a protocol control channel carried over the default ACL logical transport.
-  * any logical link supporting L2CAP protocol can carry L2CAP encapsulated data. 
+<section>
+  <h3>L2CAP</h3>
+  <div class="ppt">
+    <ul>
+      <li>provides a channel-based abstraction to applications and services.</li>
+      <li>applicaiton segmentation and reassembly of application data.</li>
+      <li>multiplexing and de-multiplexing of multiple channels over a shared logical link.</li>
+      <li>has a protocol control channel carried over the default ACL logical transport.</li>
+      <li>any logical link supporting L2CAP protocol can carry L2CAP encapsulated data.</li>
+    </ul>
+  </div>
 </section>
