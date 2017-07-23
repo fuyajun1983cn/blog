@@ -245,9 +245,14 @@ categories: bluetooth
       <li>Access code, header, payload</li>
       <li>Packet types</li>
     </ul>
+  </ul>
+</section>
+<section>
+  <ul>
     <li>Connection establishment</li>
     <ul>
-      <li>Device discovery, device connection</li>
+      <li>Device discovery</li>
+      <li>Device connection</li>
     </ul>
     <li>Low power modes</li>
     <ul>
@@ -266,23 +271,36 @@ categories: bluetooth
       <li>Shared with 802.11b/g, cordless telephony, microwave ovens</li>
       <li>Other bands (WAN, 802.11a, WiMax, UWB)</li>
     </ul>
-    <li>Frequency hopping (spread spectrum)</li>
-    <ul>
-      <li>1 MHz channels, hopping randomly over 79 frequencies (2402 to 2480 MHz)</li>
-      <li>Hopping rate nominally 1600 Hz (hops every 625 us = 1 slot)</li>
-      <li>Imposes requirements on synthesizer design and packet format to be able to quickly retune and settle synthesizer (~100 us)</li>
-      <li>Requires network synchronization</li>
-      <ul>
-        <li>Both transmitter and receiver need to be hopping on the same sequence</li>
-        <li>Both transmitter and receiver need to be time-synchronized so that they are hopping at the same time</li>
-      </ul>
-    </ul>
-    <li>Time Division Duplexing (TDD)</li>
+   
+  </ul>
+</section>
+<section>
+  <ul>
+     <li>Time Division Duplexing (TDD)</li>
     <ul>
       <li>Half duplex, i.e., for any given slot, either transmitter or receiving (not both)</li>
       <li>Take turns transmitting and receiving</li>
       <li>Implies a simpler radio architecture (single synthesizer can be shared)</li>
     </ul>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Frequency hopping (spread spectrum)</li>
+    <ul>
+      <li>1 MHz channels, hopping randomly over 79 frequencies (2402 to 2480 MHz)</li>
+      <li>Hopping rate nominally 1600 Hz (hops every 625 us = 1 slot)</li>
+      <li>Imposes requirements on synthesizer design and packet format to be able to quickly retune and settle synthesizer (~100 us)</li>
+    </ul>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Requires network synchronization</li>
+      <ul>
+        <li>Both transmitter and receiver need to be hopping on the same sequence</li>
+        <li>Both transmitter and receiver need to be time-synchronized so that they are hopping at the same time</li>
+      </ul>      
   </ul>
 </section>
 <section>
@@ -298,14 +316,23 @@ categories: bluetooth
         <li>Typical sensitivity (GFSK) is around -88 dBm</li>
         <li>-70 dBm sensitivity is required by BT spec</li>
       </ul>
-      <li>Packet Error Rate (PER/LPR)</li>
+      
+    </ul>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Packet Error Rate (PER/LPR)</li>
       <ul>
         <li>Not included as part of Bluetooth SIG test spec, but may included in Vendor’s internal requirements</li>
         <li>LPR = missed access code, header error, other (only dependent on GFSK AC+HDR)</li>
         <li>PER = includes LPR + payload CRC error</li>
       </ul>
-    </ul>
-    <li>Transmitter Output Power</li>
+  </ul>
+</section>
+<section>
+  <ul>
+     <li>Transmitter Output Power</li>
     <ul>
       <li>Bluetooth spec defines several transmit classes</li>
       <ul>
@@ -329,18 +356,26 @@ categories: bluetooth
         <li>‘0’ = -160 kHz</li>
       </ul>
     </ul>
-    <li>/4-DQPSK = /4-Rotated Differential QuadraturePhase Shift Keying</li>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li> π/4-DQPSK =  π/4-Rotated Differential QuadraturePhase Shift Keying</li>
     <ul>
       <li>Symbol rate is 1 Msymbol/second</li>
       <li>Each symbol contains two bits of information (either 00, 01, 10, or 11)</li>
       <li>Information is conveyed in phase differences between successive symbols (4 possibilities)</li>
     </ul>
+  </ul>
+</section>
+<section>
+  <ul>
     <li>D8PSK = Differential 8-Phase Shift Keying</li>
     <ul>
       <li>Symbol rate is 1 Msymbol/second</li>
       <li>Each symbol contains three bits of information (either 000, 001, 010, etc)</li>
       <li>Information is conveyed in phase differences between successive symbols (8 possibilities)</li>
-    </ul>
+    </ul>    
   </ul>
 </section>
 <section>
@@ -355,12 +390,16 @@ categories: bluetooth
         <li>All the work is done in the receiver</li>
         <li>Error correction is performed before CRC check</li>
       </ul>
-      <li>Coding works by adding controlled redundancy to the information stream</li>
+    </ul>
+</section>
+<section>
+  <ul>
+     <li>Coding works by adding controlled redundancy to the information stream</li>
       <ul>
         <li>Code rate = information bits / transmitted bits</li>
       </ul>
-      <li>Bluetooth uses R=1/3 repetition code and R=2/3 Hamming code</li>
-    </ul>
+      <li>Bluetooth uses R=1/3 repetition code and R=2/3 Hamming code</li>     
+  </ul>
 </section>
 <section>
   <h3>Network Topology</h3>
@@ -375,8 +414,12 @@ categories: bluetooth
         <li>Burst timing is based on the master’s clock</li>
         <li>The physical channel ideally isolates nearby piconets from one another</li>
       </ul>
-      <li>Any particular device can take on either the master or slave role</li>
     </ul>
+  </ul>
+</section>
+<section>
+  <ul>
+    <li>Any particular device can take on either the master or slave role</li>      
     <li>Scatternet</li>
     <ul>
       <li>A device can participate in two or more piconets (time division multiplexed)</li>
@@ -522,6 +565,15 @@ categories: bluetooth
       <td>1–3 Mbps</td>
       <td>1Mbps</td>
     </tr>
+  </table>
+</section>
+<section>
+  <table class="table table-bordered">
+    <tr>
+      <th>Technical specifications</th>
+      <th>BR/EDR</th>
+      <th>LE</th>
+    </tr>
     <tr>
       <td>Application throughput</td>
       <td>0.7–2.1 Mbps</td>
@@ -537,7 +589,16 @@ categories: bluetooth
       <td>64-bit/128-bit and application layer user defined</td>
       <td>128-bit and application layer user defined</td>
     </tr>
+  </table>
+</section>
+<section>
+   <table class="table table-bordered">
     <tr>
+      <th>Technical specifications</th>
+      <th>BR/EDR</th>
+      <th>LE</th>
+    </tr>
+        <tr>
       <td>Robustness</td>
       <td>Adaptive fast frequency hopping, FEC, fast ACK</td>
       <td>Adaptive fast frequency hopping</td>
@@ -552,7 +613,16 @@ categories: bluetooth
       <td>Worldwide</td>
       <td>The same as BR/EDR</td>
     </tr>
+   </table>
+</section>
+<section>
+   <table class="table table-bordered">
     <tr>
+      <th>Technical specifications</th>
+      <th>BR/EDR</th>
+      <th>LE</th>
+    </tr>
+        <tr>
       <td>Certification body</td>
       <td>BT SiG</td>
       <td>The same as BR/EDR</td>
@@ -577,6 +647,15 @@ categories: bluetooth
       <td>Yes</td>
       <td>The same as BR/EDR</td>
     </tr>
+   </table>
+</section>
+<section>
+   <table class="table table-bordered">
+    <tr>
+      <th>Technical specifications</th>
+      <th>BR/EDR</th>
+      <th>LE</th>
+    </tr>
     <tr>
       <td>Profile concept</td>
       <td>Yes</td>
@@ -589,8 +668,8 @@ categories: bluetooth
       <td>Mobile phones, gaming, automotive, PCs, watches, sports
 and fitness, healthcare, home electronics, automation,
         industrial, etc.</td>
-    </tr>
-  </table>
+    </tr>    
+   </table>
 </section>
 <section>
   <h3>How to Achieve Ultimate Low Power</h3>
@@ -604,7 +683,11 @@ and fitness, healthcare, home electronics, automation,
     <ul>
       <li>The devices can connect in 3 ms (vs. > 100 ms for BR/EDR).</li>
     </ul>
-    <li>Lower peak power</li>
+  </ul>
+</section>
+<section>
+  <ul>
+     <li>Lower peak power</li>
     <ul>
       <li>BT low-energy technology uses relaxed RF parameters.</li>
       <ul>
@@ -616,24 +699,26 @@ and fitness, healthcare, home electronics, automation,
         <li>Together with GFSK, gives lowest complexity transmitter/receiver</li>
         <li>Provides lower peak power</li>
       </ul>
-    </ul>
+    </ul>   
   </ul>
 </section>
 <section>
   <h3>BT Low Energy Architecture</h3>
-  <div class="ppt-left">
-    <ul>
-      <li>Physical layer: transmits/receives bits</li>
-      <li>Link layer: packets and control</li>
-      <li>HCI: interface between host/controller</li>
-      <li>L2CAP: multiplexer</li>
-      <li>Attribute protocol: protocol for accessing data</li>
-      <li>Attribute profile: how are things organized</li>
-      <li>Device profiles: applications</li>
-    </ul>
-  </div>
-  <div class="ppt-right">
-    <img src="/images/2017/2017072201.png" class="img-responsive">
+  <div class="ppt">
+    <div class="ppt-left">
+      <ul>
+        <li>Physical layer: transmits/receives bits</li>
+        <li>Link layer: packets and control</li>
+        <li>HCI: interface between host and controller</li>
+        <li>L2CAP: multiplexer</li>
+        <li>Attribute protocol: protocol for accessing data</li>
+        <li>Attribute profile: how are things organized</li>
+        <li>Device profiles: applications</li>
+      </ul>
+    </div>
+    <div class="ppt-right">
+      <img src="/images/2017/2017072201.png" class="img-responsive">
+    </div>
   </div>
 </section>
 <section>
@@ -652,6 +737,10 @@ and fitness, healthcare, home electronics, automation,
       <li>Three fixed channels (Ch37 = 2402 MHz, Ch38 = 2426 MHz,
         and Ch39 = 2480 MHz)</li>
     </ul>
+  </ul>
+</section>
+<section>
+  <ul>
     <li>Data channels</li>
     <ul>
       <li>Used to send application data</li>
