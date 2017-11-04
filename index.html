@@ -10,13 +10,14 @@ layout: home
               <a href="{{ post.url }}">
                 <h3 class="blog-post-title">{{ post.title }}</h3>
                 <p class="blog-post-meta">{{ post.date | date: "%B %e, %Y" }} By <a href="#">{{ post.author}}</a> </p>
-                <p ><b>内容摘要: </b>{{ post.excerpt | remove: '<p>' | remove: '</p>' | strip_html | truncate: 150 }}</p>
+                <p ><b>内容摘要: </b>{{ post.excerpt | remove: '<p>' | remove: '</p>' | strip_html | truncate: 300 }}</p>
               </a>
     {% endif %}
     {% endfor %}
   </ul>
 </div>
 
+<!-- don't show github activity info
 <div class="panel panel-primary">
   <div class="panel-heading">我的GitHub动态信息</div>
   <div class="panel-body">
@@ -24,5 +25,5 @@ layout: home
   </div>
 </div>
 
-
+-->
 
