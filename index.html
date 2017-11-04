@@ -6,7 +6,7 @@ layout: home
    
   <ul class="list-unstyled">
     {% for post in site.posts %}
-    {% if forloop.index <= 5 %}
+    {% if forloop.index <= 10 %}
               <a href="{{ post.url }}">
                 <h3 class="blog-post-title">{{ post.title }}</h3>
                 <p class="blog-post-meta">{{ post.date | date: "%B %e, %Y" }} By <a href="#">{{ post.author}}</a> </p>
