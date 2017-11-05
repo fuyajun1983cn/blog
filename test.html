@@ -40,9 +40,9 @@ layout: default
 
 
 <div class="js-comments">
-	{% assign comments = site.data.comments['2017060901'] %}
-	
-    {{ comments }}
+  {% assign comments = site.data.comments | map: "2017060901" %}
+
+  {{ comments }}
 
 </div>
 

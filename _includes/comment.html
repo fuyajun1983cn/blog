@@ -1,7 +1,6 @@
 <div class="panel panel-default" id="comments">
-  {% assign comments = site.data.comments[page.commentid] %} <!-- | sort %} -->
 
-  {{ comments }}
+  {% assign comments = site.data.comments[page.commentid] %} <!-- | sort %} -->
 
   <div class="panel-heading">评论框</div>
 
@@ -56,7 +55,7 @@
     <form
       method="POST"
       action="https://api.staticman.net/v2/entry/fuyajun1983cn/blog/gh-pages/comments"
-      class="form-horizontal"
+      class="js-form form form-horizontal"
       >
       
 

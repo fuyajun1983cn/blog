@@ -3,6 +3,7 @@ layout: post
 title:  "Bluetooth Socket类分析"
 date:   2015-11-15 16:46:51 +0800
 categories: bluetooth
+commentid: "2015111502"
 ---
 ## Bluetooth Socket类分析  
 Bluetooth Socket类的接口与TCP Socket类：`java.net.Socket`和java.net.ServerSocket类似，它也包含服务器端Socket和客户端Socket。  

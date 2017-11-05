@@ -3,6 +3,7 @@ layout: post
 title:  "Bluetooth Gatt简要剖析"
 date:   2015-11-15 16:46:51 +0800
 categories: bluetooth
+commentid: "2015111501"
 ---
 # <center><font color='black'>Bluetooth Gatt Profile简要剖析</font></center>#
 --------------------
