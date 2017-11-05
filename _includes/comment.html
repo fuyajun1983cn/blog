@@ -1,5 +1,7 @@
 <div class="panel panel-default" id="comments">
-  {% assign comments = site.data.comments[page.slug] %} <!-- | sort %} -->
+  {% assign comments = site.data.comments[page.commentid] %} <!-- | sort %} -->
+
+  {{ comments }}
 
   <div class="panel-heading">评论框</div>
 
@@ -24,7 +26,7 @@
             </div>
           </div>
           <div class="Comment-message">
-            {% if comment.email == "13a28fac985c11eb7f40169be7da32f4" %}
+            {% if comment.email == "8129405c2aea0e735cec7138d7ef3d52" %}
             {% assign paragraphs = comment.message | newline_to_br | split: '<br />' %}
             {% else %}
             {% assign paragraphs = comment.message | strip_html | escape_once | newline_to_br | split: '<br />' %}
@@ -34,6 +36,7 @@
         </div>
         {% endfor %}
       </div>
+      <br>
       <h3>Leave a comment</h3>
       {% else %}
       <h2 class="Comments-title">No comments, be the first to comment</h2>
@@ -41,6 +44,13 @@
     </div>
 
 
+    <!--
+
+        All fields should be nested under a fields array. Optionally, a options array can be used to pass along additional information, such as the title of a post.
+
+        You can specify a redirect URL in a options[redirect] field. When the form is submitted, users will be redirected to this URL automatically.
+
+    -->
     
 
     <form
@@ -52,9 +62,9 @@
 
      
       <input
-        name="options[slug]"
+        name="options[commentid]"
         type="hidden"
-        value="{{ page.slug }}"
+        value="{{ page.commentid }}"
         >
 
 

@@ -35,8 +35,15 @@ layout: default
   {% endfor %}
   <li>{{lastyear}}({{counter}})</li>
 </ul>
-thisdfs
-{{ site._data.comments['eventfd系统调用研究'] }}
+
+</div>
+
+
+<div class="js-comments">
+	{% assign comments = site.data.comments['2017060901'] %}
+	
+    {{ comments }}
+
 </div>
 
 
