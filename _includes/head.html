@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="{{ "/assets/plugins/reveal.js-3.5.0/lib/css/zenburn.css" | prepend: site.baseurl }}">
   {% endif %}
 
-  {% if page.layout == "post" %}
+  {% if page.layout == "post" or page.layout == "test" %}
   <link rel="stylesheet" href="{{"/assets/plugins/staticman/css/main.css " | prepend: site.baseurl }}">
   {% endif %}
   
@@ -64,15 +64,61 @@
   <script src="{{"/assets/js/highlight.pack.js" | prepend: site.baseurl }}"></script>
   <script src="{{"/assets/js/jquery.min.js" | prepend: site.baseurl }}"></script>
   <script src="{{"/assets/js/bootstrap.min.js" | prepend: site.baseurl }}"></script>
-  {% if page.layout == "post" %}
+  {% if page.layout == "post" or page.layout == "test" %}
   <script src="{{"/assets/plugins/staticman/js/main.js" | prepend: site.baseurl }}"></script>
   {% endif %}
   
   <script>
+
+    function init_comment() {
+    
+    $('.js-form').submit(function (event) {
+
+    console.log("this is a test")
+    var form = this;
+
+    $(form).addClass('form--loading');
+
+    $.ajax({
+      type: $(this).attr('method'),
+      url: $(this).attr('action'),
+      data: $(this).serialize(),
+      contentType: 'application/x-www-form-urlencoded',
+    success: function (data) {
+   
+    $("#submit-status").text("Submit successfully! Thanks for your comment").show().fadeOut(1000, function() {
+    location.reload();
+    });
+      },
+    error: function (err) {
+    $("#submit-status").text("Sorry, there are an error with the submission.").show().fadeOut(1000, function() {
+    location.reload();
+    });
+    
+      }
+    });
+
+    console.log("submit reqeust")
+
+    event.preventDefault();
+  });
+  
+  console.log("comment initialized.");
+    }
+
+    
     $(document).ready(function() {
         $('div pre').each(function(i, block) {
             hljs.highlightBlock(block);
-        });
     });
+    init_comment();
+    });
+
+
+    
+
+
+   
+
   </script>
 </head>

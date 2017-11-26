@@ -67,4 +67,7 @@
 	z-index: 9999;
 }
 
+#submit-status {
+    color: red;
+}
 

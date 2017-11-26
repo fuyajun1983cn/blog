@@ -1,10 +1,16 @@
+/*
 (function ($) {
-  var $comments = $('.js-comments');
+ // var $comments = $('.js-comments');
+
 
   $('.js-form').submit(function () {
+
+    console.log("this is a test")
     var form = this;
 
     $(form).addClass('form--loading');
+
+    alert("test");
 
     $.ajax({
       type: $(this).attr('method'),
@@ -22,6 +28,8 @@
       }
     });
 
+    console.log("submit reqeust")
+
     return false;
   });
 
@@ -35,4 +43,7 @@
 
     $('body').addClass('show-modal');
   }
+
+  console.log("comment initialized.");
 })(jQuery);
+*/

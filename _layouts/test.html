@@ -1,0 +1,14 @@
+---
+layout: default
+---
+
+  <div>
+    {{ content }}
+  </div>
+
+
+  {%if page.commentid != null %}
+  {% include comment.html %}
+  {% endif %}
+
+</article>
