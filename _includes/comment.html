@@ -30,7 +30,17 @@
             {% else %}
             {% assign paragraphs = comment.message | strip_html | escape_once | newline_to_br | split: '<br />' %}
             {% endif %}
-            {% for paragraph in paragraphs %}{% assign p = paragraph | strip_newlines %}{% if p != "" %}<p>{{ p }}</p>{% endif %}{% endfor %}
+            {% for paragraph in paragraphs %}{% assign p = paragraph | strip_newlines %}{% if p != "" %}<p>
+
+              {% if comment.email == "8129405c2aea0e735cec7138d7ef3d52" %}
+              <font color="red">
+                {{ p }}
+              </font>
+              {% else %}
+              {{ p }}
+              {% endif %}
+
+            </p>{% endif %}{% endfor %}
           </div>
         </div>
         {% endfor %}
